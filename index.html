@@ -1,0 +1,2647 @@
+<!doctype html>
+<html lang="zh-CN" data-project-root="..">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="TRIP · 梦与现实：关于改变、陪伴与自我寻找的互动故事导图。">
+<title>TRIP · 梦与现实</title>
+<style>
+:root{font-family:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC",sans-serif;color:#f4f5f8;background:#000;color-scheme:dark;font-synthesis:none}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}button:disabled{cursor:default;opacity:.3}button:focus-visible,a:focus-visible{outline:1px solid #e0f1ff;outline-offset:5px}#app,#universe,#map{position:fixed;inset:0;width:100%;height:100%}#universe{pointer-events:none}#map{touch-action:manipulation}
+header{position:absolute;z-index:4;top:27px;left:32px;right:32px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;pointer-events:none}h1{font-size:25px;font-weight:400;letter-spacing:.22em;margin:0 0 6px}.subtitle{margin:0;color:#c2ccd18c;font-size:11px;letter-spacing:.08em;line-height:1.8}nav{display:flex;gap:8px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}.control{border:1px solid #d9e9fa36;border-radius:999px;background:#02040880;padding:9px 15px;font-size:12px;white-space:nowrap;transition:background .2s,border-color .2s}.control:hover:not(:disabled){background:#ffffff14;border-color:#e1f3ff70}
+.node{outline:none;cursor:pointer}.node[aria-disabled="true"]{cursor:default;pointer-events:none}.skin{fill:url(#film);stroke:var(--tone,#eaf1f7);stroke-width:1.05;stroke-opacity:.63}.dark-glass{fill:#02050b;fill-opacity:.39}.shine{fill:none;stroke:#fff;stroke-linecap:round;pointer-events:none}.focus-ring{fill:none;stroke:#fff;stroke-width:1;stroke-dasharray:3 5;opacity:0}.node:focus-visible .focus-ring{opacity:.9}.node:hover:not([aria-disabled="true"]) .skin{stroke-opacity:1;stroke-width:1.5}.node-label{fill:#f5f8ff;text-anchor:middle;dominant-baseline:central;pointer-events:none;font-weight:400;paint-order:stroke;stroke:#01030660;stroke-width:2;stroke-linejoin:round}.node-status{fill:#b7c2cc;font-size:10px;text-anchor:middle;dominant-baseline:central;pointer-events:none}.relationship{fill:none;stroke:#d9e4ee;stroke-width:1;stroke-linecap:round;pointer-events:none}.reading-link{fill:none;stroke:#e5c7aa;stroke-opacity:.55;stroke-width:1;pointer-events:none}
+#reading{position:absolute;z-index:3;left:0;top:0;width:400px;opacity:0;visibility:hidden;pointer-events:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff3b transparent;padding:3px 12px 12px 0;background:transparent;color:#eef2f7;will-change:opacity}#reading.visible{visibility:visible;pointer-events:auto}#reading .trail{margin:0 0 12px;font-size:12px;line-height:1.6;color:#c4d1db8c}#reading h2{font-weight:400;line-height:1.65;font-size:clamp(18px,1.65vw,24px);letter-spacing:.025em;margin:0;padding:0 0 15px;border-bottom:1px solid #dceaf18c;text-shadow:0 0 13px #c2e8ff24;overflow-wrap:anywhere}.reading-meta{display:flex;align-items:center;gap:14px;margin:16px 0 16px;font-size:11px;color:#a4b2c0}.status{padding:3px 8px;border:1px solid #adbed736;border-radius:999px;color:#d7e6dc}.status[data-status="暂定"]{color:#efd3a1;border-color:#efd3a13d}.status[data-status="待定"]{color:#bcc5d7;border-color:#bcc5d73d}#reading .body{font-size:15px;line-height:1.95;letter-spacing:.02em;text-shadow:0 0 10px #d4ecff14}#reading .body p{margin:0 0 13px}#reading details{font-size:11px;line-height:1.85;color:#adbfce99;margin:17px 0 3px}#reading summary{cursor:pointer;width:max-content;max-width:100%;color:#becbd5b3}#reading .sources{padding-top:8px}#reading .sources a{display:block;color:#b8d0df;text-decoration:none;overflow-wrap:anywhere;padding:4px 0}#reading .sources a:hover{text-decoration:underline}#reading .reading-actions{display:flex;gap:9px;margin-top:20px}#reading .control{font-size:11px;padding:7px 13px}
+footer{position:absolute;z-index:3;left:30px;right:30px;bottom:24px;display:flex;justify-content:space-between;align-items:center;gap:15px;pointer-events:none;color:#c0cbd78c;font-size:11px;line-height:1.8}#hint{margin:0;max-width:70%}#counter{color:#a4b6c36e;white-space:nowrap}#announcer{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:700px){header{top:19px;left:20px;right:20px;gap:10px}h1{font-size:21px}.subtitle{font-size:9px;max-width:142px}nav{gap:6px;max-width:210px}.control{font-size:10px;padding:7px 10px}footer{left:20px;right:20px;bottom:17px;font-size:10px;gap:9px}#hint{max-width:74%}#counter{font-size:9px}#reading{padding-right:8px}#reading h2{font-size:19px}#reading .body{font-size:14px;line-height:1.9}.reading-meta{margin:12px 0}#reading .trail{font-size:10px;margin-bottom:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+#reading{display:flex;flex-direction:column}#reading>.trail,#reading>h2,#reading>.reading-meta,#reading>details,#reading>.reading-actions{flex:0 0 auto}#reading>.body{flex:1 1 auto;min-height:72px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff3b transparent;padding-right:4px}#reading .sources{max-height:100px;overflow-y:auto;scrollbar-width:thin}#reading .reading-actions{margin-top:15px;padding-bottom:1px}
+@media(max-height:600px){#reading{display:block}#reading>.body{min-height:0;overflow:visible}}
+.hit-area{fill:transparent;stroke:none;pointer-events:all}.node-label{stroke:#01040995;stroke-width:3px}.node .focus-ring{stroke-opacity:.7}.relation-path{stroke:#bca6e9;stroke-width:1;stroke-opacity:.52;stroke-dasharray:3 7;fill:none}.relation-label{font-size:10px;fill:#d3c9e7;paint-order:stroke;stroke:#02050af0;stroke-width:4px;text-anchor:middle;dominant-baseline:central;pointer-events:none}.related-reading{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.related-reading:empty{display:none}.related-reading button{font-size:10px;color:#b8d5df;background:transparent;border:0;border-bottom:1px solid #b8d5df45;padding:3px 0;margin-right:10px;max-width:100%;text-align:left}#breadcrumbs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:4px;pointer-events:auto;color:#cbd8e670}#breadcrumbs button{font:inherit;color:#cbd8e6b3;background:none;border:0;padding:0;line-height:1.6;font-size:10px}#breadcrumbs button:hover{color:#fff}#hint{max-width:900px}footer>div{max-width:85%}.subtitle{max-width:520px;letter-spacing:.04em}.control{padding:8px 13px}nav{max-width:480px}#reading>.related-reading{max-height:75px;overflow:auto}#reading h2{font-size:clamp(18px,1.45vw,22px)}#reading .body{font-size:15px;line-height:1.9}#reading .reading-meta{margin:12px 0}#reading .reading-actions{gap:8px}#reading .reading-actions .control{padding:6px 10px;font-size:10px}
+@media(max-width:700px){header{left:18px;right:18px}.subtitle{max-width:142px;font-size:9px}nav{max-width:198px;gap:5px}.control{font-size:9px;padding:6px 8px}footer{bottom:12px;left:20px;right:20px}footer>div{max-width:100%}#counter{display:none}#breadcrumbs{gap:5px}#breadcrumbs button{font-size:9px}#hint{font-size:10px;line-height:1.6}#reading .body{font-size:14px}#reading h2{font-size:18px}.reading-meta{font-size:10px}}
+</style>
+<style>
+#map{user-select:none;-webkit-user-select:none}#app[data-state="overview"] #map{touch-action:none}#app[data-state="overview"] .node{cursor:grab}#app[data-dragging="true"] .node,#app[data-dragging="true"] #map{cursor:grabbing}.status{padding:0;border:0;border-radius:0;color:#d8c5aa;opacity:.44;font-size:11px}.provisional-inline{font-size:.8em;opacity:.44;color:#d8c5aa}.status[hidden]{display:none}.reading-meta:has(.status[hidden]):has(#scroll-hint[hidden]){height:0;margin:8px 0}
+</style>
+</head>
+<body>
+<main id="app" data-state="loading">
+<canvas id="universe" aria-hidden="true"></canvas>
+<svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="TRIP · 梦与现实互动导图">
+<defs>
+<radialGradient id="film" cx="34%" cy="25%" r="77%"><stop offset="0" stop-color="#f0f6ff" stop-opacity=".12"/><stop offset=".40" stop-color="#e2ecff" stop-opacity=".025"/><stop offset=".77" stop-color="#dce8ff" stop-opacity=".045"/><stop offset="1" stop-color="#d6ecff" stop-opacity=".17"/></radialGradient>
+<filter id="soft-rim" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="1.25"/></filter>
+<mask id="line-mask" maskUnits="userSpaceOnUse"><rect id="mask-background" fill="white"/><g id="line-holes" fill="black"></g><rect id="reading-hole" fill="black" width="0" height="0"/></mask>
+<mask id="reading-line-mask" maskUnits="userSpaceOnUse"><rect id="reading-mask-background" fill="white"/><g id="reading-line-holes" fill="black"></g><rect id="reading-line-hole" fill="black" width="0" height="0"/></mask>
+</defs>
+<g id="links" mask="url(#line-mask)"></g><g id="relation-layer" mask="url(#line-mask)"></g><path id="reading-link" class="reading-link" mask="url(#reading-line-mask)"/>
+<path id="membrane" class="skin" visibility="hidden" pointer-events="none"/><g id="bubble-layer"></g>
+</svg>
+<header><div><h1>TRIP</h1><p id="tagline" class="subtitle">在梦与现实之间，寻找自己。</p></div><nav aria-label="画面控制"><button id="background-toggle" class="control">纯黑背景</button><button id="orbit-toggle" class="control">暂停公转</button><button id="back" class="control" disabled>返回</button><button id="home" class="control" disabled>总览</button></nav></header>
+<section id="reading" aria-hidden="true" aria-label="故事说明"><p class="trail"></p><h2></h2><div class="reading-meta"><span class="status"></span><span id="scroll-hint" hidden>可滚动阅读</span></div><div class="body"></div><div id="related-reading" class="related-reading"></div><details><summary>资料来源</summary><div class="sources"></div></details><div class="reading-actions"><button id="back-branch" class="control">返回</button><button id="next-item" class="control">下一个要点</button></div></section>
+<footer><div><div id="breadcrumbs" aria-label="当前位置"></div><p id="hint">点击泡泡，逐层走近这个故事。</p></div><span id="counter">梦 · 现实 · 自我</span></footer><div id="announcer" role="status" aria-live="polite"></div>
+</main>
+<script>
+/* Presentation wording copy. Structure, source paths and status metadata follow the final original. */
+window.TRIP_CONTENT = {
+  "title": "TRIP · 梦与现实",
+  "intro": "往返于梦与现实，主角经历不同的自己，也在变化与陪伴中继续寻找。",
+  "rootId": "trip",
+  "nodes": [
+    {
+      "id": "trip",
+      "parentId": null,
+      "title": "梦与现实",
+      "compactTitle": "梦与现实",
+      "kind": "root",
+      "domain": "world",
+      "description": "主角往返于梦与现实之间，经历不同的自己，也在变化与关系中寻找自我和生活的意义。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "故事中的追寻与冲突",
+          "path": "narrative/STORY.md"
+        },
+        {
+          "label": "梦与现实的日常循环",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "world",
+      "parentId": null,
+      "title": "世界与规则",
+      "compactTitle": "世界与规则",
+      "kind": "domain",
+      "domain": "world",
+      "description": "梦与现实构成这里的日常循环；人在现实中的“变化”，以及周围如何回应，都有各自的规则。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "这个世界的日常",
+          "path": "canon/WORLD.md"
+        },
+        {
+          "label": "梦、药与现实的联系",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "parentId": null,
+      "title": "人物与故事",
+      "compactTitle": "人物与故事",
+      "kind": "domain",
+      "domain": "story",
+      "description": "主角的梦开始不同于往常。他在变化中寻找自己，也面对陪伴、关系和不同的未来。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "故事如何展开",
+          "path": "narrative/STORY.md"
+        },
+        {
+          "label": "人物与他们的关系",
+          "path": "canon/CHARACTERS.md"
+        }
+      ]
+    },
+    {
+      "id": "expression",
+      "parentId": null,
+      "title": "主题与表达",
+      "compactTitle": "主题与表达",
+      "kind": "domain",
+      "domain": "expression",
+      "description": "关于自我、完美与逃避的追问，藏在人物的经历里；画面与声音则贴近他们的处境和感受。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "故事的主题与现实联系",
+          "path": "direction/THEMES.md"
+        },
+        {
+          "label": "画面与声音的表达",
+          "path": "direction/AUDIOVISUAL_LANGUAGE.md"
+        }
+      ]
+    },
+    {
+      "id": "world-premise",
+      "parentId": "world",
+      "title": "这个世界的日常",
+      "compactTitle": "世界的日常",
+      "kind": "section",
+      "domain": "world",
+      "description": "不同画风、物种与材质的个体可以自然共处；药与梦也像睡眠一样融入日常，不必追问它们从何而来。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "世界日常的设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "aesthetics-diversity",
+      "parentId": "world-premise",
+      "title": "不同的样子，也能自然共处",
+      "compactTitle": "不同样貌共存",
+      "kind": "concept",
+      "domain": "world",
+      "description": "不同画风、物种、材质与存在方式，可以在同一个现实中自然共处；差异本身不必成为一件特别的事。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "多种存在方式的设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "aesthetics-everyday",
+      "parentId": "world-premise",
+      "title": "药与梦，也是日常的一部分",
+      "compactTitle": "梦与药的日常",
+      "kind": "concept",
+      "domain": "world",
+      "description": "药与梦被设想为日常的一部分，不必追溯它们的起源；这一世界层面的安排仍属暂定。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "药与梦融入日常的设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "cycle",
+      "parentId": "world",
+      "title": "梦与现实的循环",
+      "compactTitle": "梦与现实循环",
+      "kind": "section",
+      "domain": "world",
+      "description": "通常，人们在睡眠中做梦，从梦中接过药，醒来后决定是否服用；再次入梦，便开始下一次循环。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "通常的日常循环",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "cycle-dream-self",
+      "parentId": "cycle",
+      "title": "梦中的自己，递来一颗药",
+      "compactTitle": "梦中的自己",
+      "kind": "concept",
+      "domain": "world",
+      "description": "人们通常在梦里遇见一个固定的自己，由对方递来一颗性质稳定的药。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "通常的日常循环",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "cycle-dream-ending",
+      "parentId": "cycle",
+      "title": "梦的结尾，把可能带到现实",
+      "compactTitle": "梦与现实相接",
+      "kind": "concept",
+      "domain": "world",
+      "description": "完成梦中的递药后，梦的正常结尾会把那种可能带到现实，成为醒来时口中的药；这段过程不负责奖惩，也不是再次选择。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "梦中递药与梦的结尾",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "cycle-waking-choice",
+      "parentId": "cycle",
+      "title": "醒来之后，是否服用由自己决定",
+      "compactTitle": "醒来后的选择",
+      "kind": "concept",
+      "domain": "world",
+      "description": "醒来时，口中的药还没有被服用，决定留给现实中的自己；梦中将药放入口中，只意味着接过了药。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "梦中接药与现实服用的区别",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "cycle-next-sleep",
+      "parentId": "cycle",
+      "title": "再次入梦，开启新的一天",
+      "compactTitle": "再次入梦",
+      "kind": "concept",
+      "domain": "world",
+      "description": "“变化”持续到下一次入梦前；这个世界以梦的循环划分“一天”，但不能一直推迟睡眠。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "睡眠与一天的界线",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "pill",
+      "parentId": "world",
+      "title": "药与“变化”",
+      "compactTitle": "药与“变化”",
+      "kind": "section",
+      "domain": "world",
+      "description": "药是一种“改变的机会”，把梦中自己的某种可能带进现实；它与对应的“变化”相连，叠加后的情形仍有暂定内容。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "药与相应的“变化”",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "叠加后的暂定设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "pill-appearance",
+      "parentId": "pill",
+      "title": "像玻璃珠一样的药",
+      "compactTitle": "药的模样",
+      "kind": "concept",
+      "domain": "world",
+      "description": "药像一颗半透明的玻璃珠，里面的色彩缓慢流动；它的性质与对应的梦中自己保持稳定联系。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "药的模样与它所对应的梦",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "pill-ideal-self",
+      "parentId": "pill",
+      "title": "服用之后，成为另一种自己",
+      "compactTitle": "另一种自己",
+      "kind": "concept",
+      "domain": "world",
+      "description": "服用带来的“变化”，让人更接近心中理想的自己，或更适合继续存在；外形、性格乃至存在方式，都可能不同。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "服用后的“变化”",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "pill-duration",
+      "parentId": "pill",
+      "title": "“变化”会持续多久",
+      "compactTitle": "“变化”的时限",
+      "kind": "concept",
+      "domain": "world",
+      "description": "“变化”持续到下一次入梦前；当天没有服用的药会直接消失，不一定有可见的消散过程。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "“变化”的持续与未服用的药",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "pill-multiple",
+      "parentId": "pill",
+      "title": "“变化”的叠加与错乱",
+      "compactTitle": "叠加与错乱",
+      "kind": "concept",
+      "domain": "world",
+      "description": "多种“变化”暂定会同时存在，彼此冲突时也会带来相应的错乱；服用更多药并不意味着能力升级。",
+      "status": "暂定",
+      "sources": [
+        {
+          "label": "同时服用多颗药的设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "world-response",
+      "parentId": "world",
+      "title": "世界会如何回应",
+      "compactTitle": "世界的回应",
+      "kind": "section",
+      "domain": "world",
+      "description": "一个人经历“变化”后，熟人仍能认出他；周围的人与接下来的事情会有所顺应，但人们仍保留各自的感受。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "变了样子，仍是同一个人",
+          "path": "canon/WORLD.md"
+        },
+        {
+          "label": "周围如何顺应“变化”",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "world-identity",
+      "parentId": "world-response",
+      "title": "经历“变化”，也还是同一个人",
+      "compactTitle": "还是同一个人",
+      "kind": "concept",
+      "domain": "world",
+      "description": "一个人经历“变化”后，熟人仍能认出他；陌生人不会因此凭空知道他的过去。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "变了样子，仍是同一个人",
+          "path": "canon/WORLD.md"
+        }
+      ]
+    },
+    {
+      "id": "world-plausibility",
+      "parentId": "world-response",
+      "title": "周围也会轻微顺应“变化”",
+      "compactTitle": "周围的顺应",
+      "kind": "concept",
+      "domain": "world",
+      "description": "周围的人与接下来发生的互动，会轻微顺应当下的“变化”；但他们仍会惊讶、犹豫，也保留自己的情绪。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "周围如何顺应“变化”",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "认出一个人与顺应变化的区别",
+          "path": "canon/WORLD.md"
+        }
+      ]
+    },
+    {
+      "id": "world-familiarity",
+      "parentId": "world-response",
+      "title": "熟悉的人，更容易感到不同",
+      "compactTitle": "熟人的察觉",
+      "kind": "concept",
+      "domain": "world",
+      "description": "多种“变化”叠加时，熟悉的人暂定更容易感到异样，因为他们有原先的印象可比较；这种感觉不能用来判断服用了几颗药。",
+      "status": "暂定",
+      "sources": [
+        {
+          "label": "同时服用多颗药时的异样感",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "badtrip",
+      "parentId": "world",
+      "title": "梦也会变得不安",
+      "compactTitle": "梦的不安",
+      "kind": "section",
+      "domain": "world",
+      "description": "未服药带来的不安梦境（Bad Trip）、主角服用多颗药后的情况，以及故事末期的失控，需要分开理解；体验失控并不意味着梦境消失。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "不安体验与梦的边界",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "服用多颗药后的回应",
+          "path": "development/proposals/active/PRP-20261109-001-bad-trip-judgement-branches.md"
+        }
+      ]
+    },
+    {
+      "id": "badtrip-rule",
+      "parentId": "badtrip",
+      "title": "没有服药，下一场梦会如何",
+      "compactTitle": "未服药的梦",
+      "kind": "concept",
+      "domain": "world",
+      "description": "通常的单药循环中，当天没有服用药，下一场梦的结尾会出现不安体验；它回应的是这一步没有完成。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "日常循环中的不安体验",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "badtrip-multiple",
+      "parentId": "badtrip",
+      "title": "服用多颗药后，规则如何回应",
+      "compactTitle": "多颗药的回应",
+      "kind": "concept",
+      "domain": "world",
+      "description": "主角服用多颗药后，以哪颗药判断当天是否完成服用、拒绝能否免去不安体验，以及这条规则是否继续起作用，仍需分别决定。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "服用多颗药后的不同设想",
+          "path": "development/proposals/active/PRP-20261109-001-bad-trip-judgement-branches.md"
+        },
+        {
+          "label": "第一次事件的已有记录",
+          "path": "canon/TIMELINE.md"
+        }
+      ]
+    },
+    {
+      "id": "badtrip-uncontrolled",
+      "parentId": "badtrip",
+      "title": "当内心的失控蔓延进梦里",
+      "compactTitle": "内心的失控",
+      "kind": "concept",
+      "domain": "world",
+      "description": "只在带有崩溃色彩的结局末期，主角的精神状态与多重自我体验失控时，才可能直接引发梦中的不安体验。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角的精神状态与梦的边界",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "badtrip-dream-boundary",
+      "parentId": "badtrip",
+      "title": "感受可以失控，梦的空间仍在",
+      "compactTitle": "梦的空间仍在",
+      "kind": "concept",
+      "domain": "world",
+      "description": "主角的精神状态恶化，可能影响梦中的体验与人物；梦本身的存在和空间，却不会因此瓦解。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角的精神状态与梦的边界",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "characters",
+      "parentId": "story",
+      "title": "主角与梦中的陪伴",
+      "compactTitle": "陪伴与自我",
+      "kind": "section",
+      "domain": "story",
+      "description": "主角把许多感受留在心里，起初以失语保护自己；最初的梦一直陪伴着他。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角与最初的梦",
+          "path": "canon/CHARACTERS.md"
+        },
+        {
+          "label": "贯穿故事的陪伴",
+          "path": "narrative/STORY.md"
+        }
+      ]
+    },
+    {
+      "id": "characters-silent",
+      "parentId": "characters",
+      "title": "最初的梦：未说出口的朋友",
+      "compactTitle": "最初的梦",
+      "kind": "concept",
+      "domain": "story",
+      "description": "最初的梦是主角长久而稳定的陪伴。递药的规则松动后，他仍可因为关系或执着继续递药，也能够拒绝主角的请求。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "最初的梦与递药的选择",
+          "path": "canon/CHARACTERS.md"
+        },
+        {
+          "label": "贯穿故事的陪伴",
+          "path": "narrative/STORY.md"
+        }
+      ]
+    },
+    {
+      "id": "characters-other-selves",
+      "parentId": "characters",
+      "title": "后来的梦，带着相同的底色",
+      "compactTitle": "后来的梦",
+      "kind": "concept",
+      "domain": "story",
+      "description": "后来的梦呈现不同的心境与追求，却也保有主角相同的思考底色；他们能交谈、反对，也能作出自己的选择。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "后来的梦与共同的底色",
+          "path": "canon/CHARACTERS.md"
+        }
+      ]
+    },
+    {
+      "id": "world-memory",
+      "parentId": "characters",
+      "title": "每一次经历，都留在他心里",
+      "compactTitle": "留下的记忆",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角记得每次“变化”中的经历，也带着它们留下的情绪，知道体验这一切的始终是自己；经历连在一起，却未必让他更清楚自己是谁。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "留下的记忆与情绪",
+          "path": "canon/CHARACTERS.md"
+        }
+      ]
+    },
+    {
+      "id": "characters-independence",
+      "parentId": "characters",
+      "title": "后来的梦，记得多少、又是谁",
+      "compactTitle": "记忆与意识",
+      "kind": "concept",
+      "domain": "story",
+      "description": "后来的梦如何分享记忆、意识能独立到什么程度，仍未确定；能够自己选择，并不代表意识已完全独立。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "梦中的他们如何作出选择",
+          "path": "canon/CHARACTERS.md"
+        },
+        {
+          "label": "后来的梦：记忆与意识的设想",
+          "path": "development/proposals/active/PRP-20260716-003-dream-a-memory-and-independence.md"
+        },
+        {
+          "label": "后来的梦的其他设想",
+          "path": "development/CANDIDATES.md"
+        }
+      ]
+    },
+    {
+      "id": "anomaly",
+      "parentId": "story",
+      "title": "新的梦，新的选择",
+      "compactTitle": "新的梦与选择",
+      "kind": "section",
+      "domain": "story",
+      "description": "主角的梦不再只有最初的陪伴。后来的梦与更多药出现，原本固定的递药规则逐渐松动，他能作出的选择随之增多。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角的不同与递药关系",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "后来的梦如何作出选择",
+          "path": "canon/CHARACTERS.md"
+        }
+      ]
+    },
+    {
+      "id": "anomaly-second-self",
+      "parentId": "anomaly",
+      "title": "从最初的陪伴，到后来的梦",
+      "compactTitle": "更多梦的出现",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角遇见了后来的梦，药也不再只有一颗。这是他个人的不同，不意味着其他人的日常或整个世界同时改变。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "发生在主角身上的不同",
+          "path": "canon/RULES.md"
+        }
+      ]
+    },
+    {
+      "id": "anomaly-giving",
+      "parentId": "anomaly",
+      "title": "递药，也渐渐成为一种选择",
+      "compactTitle": "递药的选择",
+      "kind": "concept",
+      "domain": "story",
+      "description": "必须递药的规则在主角身上逐渐松动。梦中的他们可以迟疑、坚持或拒绝，但各自与药的联系仍然稳定。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角与梦中的递药关系",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "递药关系如何改变",
+          "path": "narrative/STORY.md"
+        }
+      ]
+    },
+    {
+      "id": "anomaly-request",
+      "parentId": "anomaly",
+      "title": "他可以请求，也可以拒绝",
+      "compactTitle": "请求与拒绝",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角可以选择向谁请求、要一颗、几颗或全部药，也可以拒绝递来的药；提出请求，并不意味着对方必须答应。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角与梦中的递药关系",
+          "path": "canon/RULES.md"
+        },
+        {
+          "label": "请求所有药时的关系",
+          "path": "narrative/ENDINGS.md"
+        }
+      ]
+    },
+    {
+      "id": "story-direction",
+      "parentId": "story",
+      "title": "他会走向哪里",
+      "compactTitle": "故事的去向",
+      "kind": "section",
+      "domain": "story",
+      "description": "主角还在寻找自己，也寻找生活的意义；经历得更多，未必就离答案更近，三个结局方向仍是暂定。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "主角漫长的追寻",
+          "path": "narrative/STORY.md"
+        },
+        {
+          "label": "三个结局方向",
+          "path": "narrative/ENDINGS.md"
+        }
+      ]
+    },
+    {
+      "id": "story-search",
+      "parentId": "story-direction",
+      "title": "寻找自己，还没有结束",
+      "compactTitle": "继续寻找自己",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角在漫长的经历、消耗与短暂的可能中寻找自己；他与自己、他人和现实的关系，构成这段旅程的冲突。",
+      "status": "已确认",
+      "sources": [
+        {
+          "label": "故事中的追寻与冲突",
+          "path": "narrative/STORY.md"
+        }
+      ]
+    },
+    {
+      "id": "story-coexistence",
+      "parentId": "story-direction",
+      "title": "与他们共存，仍然迷失",
+      "compactTitle": "共存与迷失",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角与梦中的他们找到某种共存的方式，继续生活、继续用药，也仍然迷失；这并不等于他被治愈，或找到了统一的答案。",
+      "status": "暂定",
+      "sources": [
+        {
+          "label": "结局一：共存，仍然迷失",
+          "path": "narrative/ENDINGS.md"
+        }
+      ]
+    },
+    {
+      "id": "story-erasure",
+      "parentId": "story-direction",
+      "title": "崩溃中，清除所有梦中的自己",
+      "compactTitle": "试图结束循环",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角在崩溃中把梦中的多重自我视为痛苦根源，清除他们，试图结束循环；这一结局的走向与具体安排仍是暂定。",
+      "status": "暂定",
+      "sources": [
+        {
+          "label": "结局二：崩溃与清除",
+          "path": "narrative/ENDINGS.md"
+        }
+      ]
+    },
+    {
+      "id": "story-all-pills",
+      "parentId": "story-direction",
+      "title": "请求所有药，连续服用",
+      "compactTitle": "眼中的世界瓦解",
+      "kind": "concept",
+      "domain": "story",
+      "description": "主角主动请求全部药并连续服用。呈现停在他眼中的世界瓦解之时，现实中究竟发生了什么留白；这一结局整体仍为暂定。",
+      "status": "暂定",
+      "sources": [
+        {
+          "label": "结局三与呈现到哪里",
+          "path": "narrative/ENDINGS.md"
+        }
+      ]
+    },
+    {
+      "id": "themes",
+      "parentId": "expression",
+      "title": "故事里的追问",
+      "compactTitle": "故事的追问",
+      "kind": "section",
+      "domain": "expression",
+      "description": "什么是自己、什么才算完美，以及为何逃避，都是故事中的追问；它们不预设唯一正确的答案。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "故事的主题",
+          "path": "direction/THEMES.md"
+        }
+      ]
+    },
+    {
+      "id": "aesthetics-themes",
+      "parentId": "themes",
+      "title": "自己与完美，都未必只有一个答案",
+      "compactTitle": "自我与完美",
+      "kind": "concept",
+      "domain": "expression",
+      "description": "自己是谁，未必有唯一而固定的答案，对一个人而言的完美也不一定客观上更好；这些是对故事的理解，不是世界运行的规则。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "故事的主题与现实联系",
+          "path": "direction/THEMES.md"
+        }
+      ]
+    },
+    {
+      "id": "themes-contact",
+      "parentId": "themes",
+      "title": "逃避能保护，也可能让人远离",
+      "compactTitle": "逃避与联系",
+      "kind": "concept",
+      "domain": "expression",
+      "description": "逃避有时能保护自己，也可能切断与世界的联系；经历更多人生，未必就更明白自己是谁。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "故事的主题与现实联系",
+          "path": "direction/THEMES.md"
+        }
+      ]
+    },
+    {
+      "id": "audiovisual",
+      "parentId": "expression",
+      "title": "画面与声音",
+      "compactTitle": "画面与声音",
+      "kind": "section",
+      "domain": "expression",
+      "description": "日常、梦境与异常时刻，可以用不同的画面和声音呈现；它们应贴近人物，以及人物当下的体验。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "画面与声音的表达",
+          "path": "direction/AUDIOVISUAL_LANGUAGE.md"
+        }
+      ]
+    },
+    {
+      "id": "aesthetics-audiovisual",
+      "parentId": "audiovisual",
+      "title": "日常、梦境与异常，各有自己的样子",
+      "compactTitle": "三种感受的呈现",
+      "kind": "concept",
+      "domain": "expression",
+      "description": "日常让人物的行动与关系清楚可读，梦境可以广阔、空灵；异常时刻则可用故障、噪点或强烈的感官刺激来呈现。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "三类体验的呈现方式",
+          "path": "direction/AUDIOVISUAL_LANGUAGE.md"
+        }
+      ]
+    },
+    {
+      "id": "audiovisual-coherence",
+      "parentId": "audiovisual",
+      "title": "让画面与声音，贴近每个人的感受",
+      "compactTitle": "风格贴近人物",
+      "kind": "concept",
+      "domain": "expression",
+      "description": "表现方式应属于具体的角色、状态或段落；再丰富的画面与声音，也不能盖过人物的情绪，以及彼此互动带来的影响。",
+      "status": "待定",
+      "sources": [
+        {
+          "label": "不同风格如何共处",
+          "path": "direction/AUDIOVISUAL_LANGUAGE.md"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-pill-state",
+      "from": "pill-appearance",
+      "to": "pill-ideal-self",
+      "label": "服用后带来“变化”",
+      "status": "已确认",
+      "kind": "mechanism"
+    },
+    {
+      "id": "rel-anomaly-cycle",
+      "from": "anomaly",
+      "to": "cycle",
+      "label": "主角身上的例外",
+      "status": "已确认",
+      "kind": "scope"
+    },
+    {
+      "id": "rel-cycle-feedback",
+      "from": "cycle",
+      "to": "badtrip-rule",
+      "label": "未服药，梦尾出现不安",
+      "status": "已确认",
+      "kind": "mechanism"
+    },
+    {
+      "id": "rel-anomaly-giving",
+      "from": "anomaly",
+      "to": "cycle-dream-self",
+      "label": "递药的规则渐渐松动",
+      "status": "已确认",
+      "kind": "scope"
+    },
+    {
+      "id": "rel-memory-state",
+      "from": "world-memory",
+      "to": "pill-ideal-self",
+      "label": "“变化”后仍留下记忆",
+      "status": "已确认",
+      "kind": "association"
+    },
+    {
+      "id": "rel-state-identity",
+      "from": "pill-ideal-self",
+      "to": "world-identity",
+      "label": "变了模样，仍是同一个人",
+      "status": "已确认",
+      "kind": "scope"
+    },
+    {
+      "id": "rel-state-interaction",
+      "from": "pill-ideal-self",
+      "to": "world-plausibility",
+      "label": "互动随“变化”轻微调整",
+      "status": "已确认",
+      "kind": "mechanism"
+    },
+    {
+      "id": "rel-uncontrolled-space",
+      "from": "badtrip-uncontrolled",
+      "to": "badtrip-dream-boundary",
+      "label": "体验失控，梦的空间仍在",
+      "status": "已确认",
+      "kind": "scope"
+    },
+    {
+      "id": "rel-request-feedback",
+      "from": "anomaly-request",
+      "to": "badtrip-multiple",
+      "label": "拒绝能否免去不安",
+      "status": "待定",
+      "kind": "scope"
+    },
+    {
+      "id": "rel-autonomy-consciousness",
+      "from": "characters-other-selves",
+      "to": "characters-independence",
+      "label": "能选择，不等于意识独立",
+      "status": "已确认",
+      "kind": "scope"
+    }
+  ]
+};
+
+</script>
+<script>
+/* TRIP tree layouts. Screen coordinates only; deterministic and dependency-free. */
+(function (global) {
+  'use strict';
+  const TAU=Math.PI*2;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const finite=(v,d)=>Number.isFinite(v)?v:d;
+  const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  const inside=(p,r,pad=0)=>p.x-p.r>=r.x+pad&&p.x+p.r<=r.x+r.w-pad&&p.y-p.r>=r.y+pad&&p.y+p.r<=r.y+r.h-pad;
+  const overlap=(a,b,gap=0)=>distance(a,b)<a.r+b.r+gap;
+  const hitsRect=(p,r,pad=0)=>p.x+p.r+pad>r.x&&p.x-p.r-pad<r.x+r.w&&p.y+p.r+pad>r.y&&p.y-p.r-pad<r.y+r.h;
+  function seed(id){let h=2166136261;for(const c of String(id)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967296}
+  function childSeed(id,salt){let h=Math.floor(seed(String(id)+':'+salt)*4294967296);h=Math.imul(h^(h>>>16),0x85ebca6b);h=Math.imul(h^(h>>>13),0xc2b2ae35);return ((h^(h>>>16))>>>0)/4294967296}
+  function childSpread(children,salt){
+    const ordered=[...children].sort((a,b)=>childSeed(a.id,salt)-childSeed(b.id,salt));
+    return new Map(ordered.map((n,i)=>[n.id,ordered.length===1?.5:i/(ordered.length-1)]));
+  }
+  function angularSpacing(angles){
+    let result=Math.PI;
+    for(let i=0;i<angles.length;i++)for(let j=i+1;j<angles.length;j++){
+      const d=Math.abs(angles[i]-angles[j])%TAU;result=Math.min(result,d,TAU-d);
+    }
+    return Math.max(.06,result);
+  }
+  function viewport(input){
+    const width=Math.max(280,finite(input.width,1440)),height=Math.max(280,finite(input.height,900));
+    const small=width<700,margin=small?20:32;
+    const safeRect={x:margin,y:small?112:108,w:Math.max(1,width-2*margin),h:Math.max(1,height-(small?182:176))};
+    return {width,height,small,safeRect};
+  }
+  function indexTree(nodes){return new Map(nodes.map(n=>[n.id,n]))}
+  function pathToRoot(node,map){const out=[],seen=new Set();let n=node;while(n&&!seen.has(n.id)){out.push(n);seen.add(n.id);n=map.get(n.parentId)}return out}
+  function domainOf(node,map){for(const n of pathToRoot(node,map)){if(n.domain)return n.domain;if(n.kind==='domain')return n.id}return 'world'}
+  function baseRadius(node,small){return node.kind==='root'?(small?23:29):node.kind==='domain'?(small?49:75):node.kind==='section'?(small?32:46):(small?33:46)}
+  function hiddenPositions(nodes,previous,small){
+    const positions={};
+    for(const n of nodes){const p=previous?.positions?.[n.id];positions[n.id]={x:finite(p?.x,-100),y:finite(p?.y,-100),r:finite(p?.r,baseRadius(n,small)),opacity:0,labelVisible:false}}
+    return positions;
+  }
+  function bounds(items){const x=Math.min(...items.map(p=>p.x-p.r)),y=Math.min(...items.map(p=>p.y-p.r));return {x,y,w:Math.max(...items.map(p=>p.x+p.r))-x,h:Math.max(...items.map(p=>p.y+p.r))-y}}
+  function fit(items,rect,maxScale=1){
+    const b=bounds(items),scale=Math.min(maxScale,rect.w/Math.max(1,b.w),rect.h/Math.max(1,b.h));
+    return items.map(p=>({...p,x:rect.x+rect.w/2+(p.x-b.x-b.w/2)*scale,y:rect.y+rect.h/2+(p.y-b.y-b.h/2)*scale,r:p.r*scale}));
+  }
+  function confine(p,rect){p.x=clamp(p.x,rect.x+p.r,rect.x+rect.w-p.r);p.y=clamp(p.y,rect.y+p.r,rect.y+rect.h-p.r)}
+  function separate(items,rect,gap=10){
+    for(const p of items){p.r=Math.min(p.r,rect.w*.45,rect.h*.45);confine(p,rect)}
+    for(let pass=0;pass<150;pass++){
+      let error=0;
+      for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
+        const a=items[i],b=items[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
+        if(d<1e-7){const angle=seed(a.id+':'+b.id)*TAU;dx=Math.cos(angle);dy=Math.sin(angle);d=1}
+        const penetration=a.r+b.r+gap-d;
+        if(penetration<=.005)continue;
+        error=Math.max(error,penetration);
+        const wa=1/(a.r*a.r),wb=1/(b.r*b.r),share=wa/(wa+wb),push=penetration*.54;
+        a.x-=dx/d*push*share*2;a.y-=dy/d*push*share*2;
+        b.x+=dx/d*push*(1-share)*2;b.y+=dy/d*push*(1-share)*2;
+        confine(a,rect);confine(b,rect);
+      }
+      if(error<.03)break;
+    }
+    return items;
+  }
+  function sourceAngle(node,map,previous,fallback=0){
+    const p=previous?.positions?.[node.id],parent=previous?.positions?.[node.parentId];
+    return p&&parent&&distance(p,parent)>1?Math.atan2(p.y-parent.y,p.x-parent.x):fallback;
+  }
+  function childAngles(children,theta){
+    if(children.length===1)return [theta];
+    return children.map((n,i)=>theta-1.72+3.44*i/Math.max(1,children.length-1)+(childSeed(n.id,'angle')-.5)*.10);
+  }
+  function childRadius(n,small,sizeUnit){
+    const factor=small?.88+.24*sizeUnit:.84+.32*sizeUnit;
+    return (n.kind==='domain'?(small?48:68):n.kind==='section'?(small?36:49):(small?35:48))*factor;
+  }
+
+  function overview(input){
+    const {width,height,small,safeRect:safe}=viewport(input),nodes=input.nodes||[],map=indexTree(nodes),phase=finite(input.phase,0);
+    const positions=hiddenPositions(nodes,null,small),domains=nodes.filter(n=>n.kind==='domain'),orbits={};
+    const portrait=width<1050,medium=portrait&&!small;
+    const roots=nodes.filter(n=>n.kind==='root');
+    roots.forEach(n=>positions[n.id]={x:safe.x+safe.w*(portrait?.79:.55),y:safe.y+safe.h*(portrait?.065:.10),r:small?23:medium?27:30,opacity:.80,labelVisible:true,independent:true});
+    for(let i=0;i<domains.length;i++){
+      const n=domains[i],name=domainOf(n,map),world=name==='world',story=name==='story',expression=name==='expression';
+      const x=portrait?(world?.44:story?.57:.18):(world?.32:story?.74:.65);
+      const y=portrait?(world?.29:story?.71:.91):(world?.53:story?.54:.88);
+      const size=small?(world?59:story?49:31):medium?(world?79:story?66:39):(world?99:story?78:44);
+      const center={x:safe.x+safe.w*x+Math.sin(phase*.014+i)*3,y:safe.y+safe.h*y+Math.cos(phase*.012+i)*3,r:size,opacity:world?1:story?.94:.65,labelVisible:true,independent:true};
+      positions[n.id]=center;
+      const sections=nodes.filter(k=>k.parentId===n.id&&k.kind==='section');
+      if(expression)continue;
+      const overviewSizes=childSpread(sections,'overview-size');
+      for(let j=0;j<sections.length;j++){
+        const child=sections[j],s=seed(child.id),speed=.036+s*.008;
+        const initial=world?(-2.95+j*TAU/sections.length):(portrait?(-1.1+j*TAU/sections.length):(-1.2+j*1.28));
+        const a=initial+phase*speed;
+        const rx=small?(world?104:84):medium?(world?170:132):(world?206:156);
+        const ry=small?(world?102:77):medium?(world?150:116):(world?178:141);
+        const radial=.88+s*.22,tilt=(s-.5)*.32,xx=Math.cos(a)*rx*radial,yy=Math.sin(a)*ry*radial;
+        const sizeUnit=overviewSizes.get(child.id);
+        const r=small?23+sizeUnit*11:medium?28+sizeUnit*18:30+sizeUnit*23;
+        positions[child.id]={x:center.x+xx*Math.cos(tilt)-yy*Math.sin(tilt),y:center.y+xx*Math.sin(tilt)+yy*Math.cos(tilt),r,opacity:1,labelVisible:true};
+        orbits[child.id]={parentId:n.id,angle:a,rx:rx*radial,ry:ry*radial,tilt,speed};
+      }
+    }
+    // Physics owns subsequent contact resolution; these unmodified targets must
+    // never inherit the static separation pass used for a readable first frame.
+    const unconstrainedPositions=Object.fromEntries(Object.entries(positions).map(([id,p])=>[id,{...p}]));
+    const visible=nodes.filter(n=>positions[n.id].opacity>0).map(n=>({id:n.id,...positions[n.id]}));
+    separate(visible,safe,small?9:15);
+    for(const p of visible)positions[p.id]=p;
+    return {positions,unconstrainedPositions,orbits,phase,safeRect:safe,width,height,mode:'overview',panel:null,visibleIds:visible.map(p=>p.id)};
+  }
+
+  function fitWithMainContexts(local,rect,nodes,positions,small){
+    const shown=new Set(local.map(p=>p.id));
+    const contexts=nodes.filter(n=>(n.kind==='domain'||n.kind==='root')&&!shown.has(n.id));
+    const independentIds=new Set(nodes.filter(n=>n.kind==='domain'||n.kind==='root').map(n=>n.id));
+    const band=contexts.length?Math.min(small?68:80,rect.h*.31):0;
+    const activeRect={x:rect.x,y:rect.y+band,w:rect.w,h:Math.max(1,rect.h-band)};
+    for(const p of fit(local,activeRect))positions[p.id]={...p,independent:independentIds.has(p.id)};
+    const maxRadius=Math.max(1,Math.min(band/2-7,rect.w/(2*(contexts.length+1))-5));
+    contexts.forEach((n,i)=>{
+      const preferred=n.kind==='root'?(small?21:25):(small?25:33);
+      positions[n.id]={x:rect.x+rect.w*(i+1)/(contexts.length+1),y:rect.y+band/2,r:Math.min(preferred,maxRadius),opacity:n.kind==='root'?.40:.30,labelVisible:true,context:true,independent:true};
+    });
+    return contexts.map(n=>n.id);
+  }
+
+  function ancestorLocal(node,map,theta,selectedRadius,small){
+    const ancestors=pathToRoot(map.get(node.parentId),map),items=[];let prior={x:0,y:0,r:selectedRadius};
+    for(let i=0;i<ancestors.length;i++){
+      const n=ancestors[i],r=n.kind==='root'?(small?22:29):n.kind==='domain'?(small?42:59):(small?37:51);
+      const d=prior.r+r+(small?28:38);
+      const p={id:n.id,x:prior.x-Math.cos(theta)*d,y:prior.y-Math.sin(theta)*d,r,opacity:n.kind==='root'?.45:i===0?.76:.55,labelVisible:true};
+      items.push(p);prior=p;
+    }
+    return items;
+  }
+  function focus(input){
+    const {width,height,small,safeRect:safe}=viewport(input),nodes=input.nodes||[],map=indexTree(nodes),selected=map.get(input.selectedId);
+    if(!selected)return overview(input);
+    const previous=input.previous||overview({...input,phase:0}),positions=hiddenPositions(nodes,previous,small),children=nodes.filter(n=>n.parentId===selected.id);
+    const theta=sourceAngle(selected,map,previous,domainOf(selected,map)==='story'?.5:-.6);
+    const selectedRadius=selected.kind==='domain'?(small?66:88):selected.kind==='root'?(small?42:58):(small?53:72);
+    const local=[{id:selected.id,x:0,y:0,r:selectedRadius,opacity:1,labelVisible:true}];
+    const sizeSpread=childSpread(children,'size'),radialSpread=childSpread(children,'radius');
+    const angles=childAngles(children,theta),maxChild=Math.max(1,...children.map(n=>childRadius(n,small,sizeSpread.get(n.id))));
+    const step=angularSpacing(angles);
+    const spacing=children.length>1?(2*maxChild+(small?17:25))/(2*Math.sin(step/2)):0;
+    children.forEach((n,i)=>{
+      const r=childRadius(n,small,sizeSpread.get(n.id));
+      const radial=(small?15:20)+(small?26:36)*radialSpread.get(n.id);
+      const d=Math.max(selectedRadius+r+(small?28:38),spacing)+radial;
+      local.push({id:n.id,x:Math.cos(angles[i])*d,y:Math.sin(angles[i])*d,r,opacity:1,labelVisible:true});
+    });
+    const ancestors=ancestorLocal(selected,map,theta,selectedRadius,small);local.push(...ancestors);
+    const contextIds=fitWithMainContexts(local,safe,nodes,positions,small);
+    return {positions,safeRect:safe,width,height,mode:'focus',selectedId:selected.id,angle:theta,panel:null,contextIds,ancestorIds:ancestors.map(p=>p.id),childIds:children.map(n=>n.id),visibleIds:nodes.filter(n=>positions[n.id].opacity>0).map(n=>n.id)};
+  }
+
+  function detail(input){
+    const {width,height,small,safeRect:safe}=viewport(input),nodes=input.nodes||[],map=indexTree(nodes),selected=map.get(input.selectedId);
+    if(!selected)return overview(input);
+    const parent=map.get(selected.parentId);if(!parent)return focus(input);
+    const previous=input.previous||focus({...input,selectedId:parent.id}),positions=hiddenPositions(nodes,previous,small),siblings=nodes.filter(n=>n.parentId===parent.id);
+    const selectedOld=previous.positions[selected.id],parentOld=previous.positions[parent.id];
+    const dx=selectedOld&&parentOld?selectedOld.x-parentOld.x:Math.cos(sourceAngle(selected,map,previous,0)),right=dx>=0;
+    const compactLandscape=height<620&&width>height*1.15,stacked=width<1000&&!compactLandscape;
+    const requestedHeight=Math.max(110,finite(input.panelHeight,240));let panel,graphic;
+    if(stacked){
+      const available=height-safe.y-66,maxHeight=Math.max(1,Math.min(Math.max(140,available*.40),available-28-Math.min(150,available*.45)));
+      const ph=Math.min(requestedHeight,maxHeight);
+      panel={x:safe.x,y:height-66-ph,w:safe.w,h:ph,side:'bottom',maxHeight,scroll:requestedHeight>ph};
+      graphic={x:safe.x,y:safe.y,w:safe.w,h:Math.max(1,panel.y-safe.y-28)};
+    }else{
+      const gap=compactLandscape?28:44,maxPanel=Math.min(580,width-2*safe.x-gap-Math.min(280,width*.40));
+      const minPanel=compactLandscape?Math.min(260,maxPanel):Math.min(300,maxPanel),defaultWidth=width*(compactLandscape?.31:.29);
+      const pw=clamp(finite(input.panelWidth,defaultWidth),minPanel,maxPanel),ph=Math.min(requestedHeight,safe.h);
+      panel={x:right?width-safe.x-pw:safe.x,y:safe.y,w:pw,h:ph,side:right?'right':'left',maxHeight:safe.h,scroll:requestedHeight>ph};
+      graphic={x:right?safe.x:panel.x+pw+gap,y:safe.y,w:width-2*safe.x-pw-gap,h:safe.h};
+    }
+    const theta=sourceAngle(parent,map,previous,sourceAngle(selected,map,previous,0)),parentRadius=small?44:58;
+    const local=[{id:parent.id,x:0,y:0,r:parentRadius,opacity:.86,labelVisible:true}],fallbackAngles=childAngles(siblings,sourceAngle(selected,map,previous,0));
+    const sizeSpread=childSpread(siblings,'size'),radialSpread=childSpread(siblings,'radius');
+    const angles=siblings.map((n,i)=>{
+      const old=previous.positions[n.id],angle=old&&parentOld&&distance(old,parentOld)>1?Math.atan2(old.y-parentOld.y,old.x-parentOld.x):fallbackAngles[i];
+      return angle;
+    });
+    const radii=siblings.map(n=>n.id===selected.id?(small?43:57)*(.92+.16*sizeSpread.get(n.id)):(small?34:45)*(.86+.28*sizeSpread.get(n.id)));
+    const spacing=siblings.length>1?(2*Math.max(...radii)+(small?15:23))/(2*Math.sin(angularSpacing(angles)/2)):0;
+    siblings.forEach((n,i)=>{
+      const angle=angles[i],r=radii[i],d=Math.max(parentRadius+r+(small?32:42),spacing)+(small?9:12)+(small?18:24)*radialSpread.get(n.id);
+      local.push({id:n.id,x:Math.cos(angle)*d,y:Math.sin(angle)*d,r,opacity:n.id===selected.id?1:.68,labelVisible:true});
+    });
+    const ancestors=ancestorLocal(parent,map,theta,parentRadius,small);local.push(...ancestors);
+    const contextIds=fitWithMainContexts(local,graphic,nodes,positions,small);
+    if(!stacked){const target=positions[selected.id];panel.y=clamp(target.y-28,safe.y,safe.y+safe.h-panel.h)}
+    const current=positions[selected.id];
+    const anchor=stacked?{x:current.x,y:current.y+current.r+9,targetX:clamp(current.x,panel.x+14,panel.x+panel.w-14),targetY:panel.y-10}:{x:current.x+(right?1:-1)*(current.r+9),y:current.y,targetX:right?panel.x-13:panel.x+panel.w+13,targetY:clamp(current.y,panel.y+10,panel.y+panel.h-10)};
+    return {positions,safeRect:safe,graphicRect:graphic,panel,anchor,width,height,mode:'detail',selectedId:selected.id,parentId:parent.id,contextIds,ancestorIds:ancestors.map(p=>p.id),siblingIds:siblings.map(n=>n.id),visibleIds:nodes.filter(n=>positions[n.id].opacity>0).map(n=>n.id)};
+  }
+
+  function audit(layout,options={}){
+    const issues=[],visible=Object.entries(layout.positions||{}).filter(([,p])=>p.opacity>.02).map(([id,p])=>({id,...p}));
+    for(let i=0;i<visible.length;i++){
+      const p=visible[i];
+      if(![p.x,p.y,p.r,p.opacity].every(Number.isFinite)||p.r<=0)issues.push('invalid circle: '+p.id);
+      if(!inside(p,layout.safeRect,-.12))issues.push('visible circle outside safe rectangle: '+p.id);
+      if(layout.panel&&hitsRect(p,layout.panel,-.12))issues.push('visible circle overlaps reading panel: '+p.id);
+      for(let j=i+1;j<visible.length;j++)if(overlap(p,visible[j],-.12))issues.push('visible circles overlap: '+p.id+','+visible[j].id);
+    }
+    if(layout.panel){const p=layout.panel;if(p.x<0||p.y<0||p.x+p.w>layout.width+.1||p.y+p.h>layout.height+.1)issues.push('reading panel outside viewport')}
+    if(options.nodes){
+      const map=indexTree(options.nodes),selected=map.get(layout.selectedId);
+      for(const n of pathToRoot(selected,map))if(!layout.positions[n.id]||layout.positions[n.id].opacity<=.02)issues.push('selected ancestor hidden: '+n.id);
+      for(const n of options.nodes.filter(n=>n.kind==='root'||n.kind==='domain'))if(!layout.positions[n.id]||layout.positions[n.id].opacity<=.02)issues.push('main heading hidden: '+n.id);
+    }
+    return issues;
+  }
+  global.TRIPLayout=Object.freeze({overview,focus,detail,audit});
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+/* Overview physics. Positions, velocities and local orbits use CSS pixels/seconds. */
+(function (global) {
+  'use strict';
+  const finite=(value,fallback=0)=>Number.isFinite(value)?value:fallback;
+  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+  const clone=value=>JSON.parse(JSON.stringify(value));
+  const smooth=value=>{value=clamp(value,0,1);return value*value*(3-2*value)};
+  const LENGTH_LIMIT=.28,THRESHOLD=5,STOP_DELAY=90,MAX_SPEED=1200;
+  const CONTACT_SPEED=105,CONTACT_RESPONSE=9,CONTACT_GAP=8;
+
+  function create(options) {
+    options=options||{};
+    const nodes=options.nodes||[];
+    const order=nodes.filter(n=>['root','domain','section'].includes(n.kind));
+    const bodies=new Map(),tethers={};
+    let width=Math.max(1,finite(options.width,1440)),height=Math.max(1,finite(options.height,900));
+    let base=null,latest=null,drag=null,resized=false;
+    for(const node of order)bodies.set(node.id,{
+      id:node.id,kind:node.kind,parentId:node.parentId,initialized:false,
+      x:0,y:0,vx:0,vy:0,centerX:0,centerY:0,cvx:0,cvy:0,
+      angle:0,scale:1,blend:1,rx:1,ry:1,tilt:0,speed:0,readableRadius:0,lastAngle:null,lastRaw:null
+    });
+
+    function visible(body){return Boolean(body&&base&&base.positions[body.id]?.opacity>.02)}
+    function raw(id){return base.unconstrainedPositions?.[id]||base.positions[id]}
+    function position(body){return {...base.positions[body.id],x:body.x,y:body.y}}
+    function safeRect(){return base?.safeRect||{x:20,y:100,w:Math.max(1,width-40),h:Math.max(1,height-170)}}
+    function parentOf(body){const parent=body.kind==='section'?bodies.get(body.parentId):null;return visible(parent)?parent:null}
+    function capVelocity(body){const speed=Math.hypot(body.vx,body.vy);if(speed>MAX_SPEED){body.vx*=MAX_SPEED/speed;body.vy*=MAX_SPEED/speed}}
+    function rebaseOrbit(body){
+      if(body.kind!=='section')return;
+      const dx=body.x-body.centerX,dy=body.y-body.centerY,c=Math.cos(body.tilt),s=Math.sin(body.tilt);
+      const nx=(dx*c+dy*s)/body.rx,ny=(-dx*s+dy*c)/body.ry;
+      body.angle=Math.atan2(ny,nx);body.scale=Math.max(.001,Math.hypot(nx,ny));
+    }
+    function putOnOrbit(body){
+      const x=Math.cos(body.angle)*body.rx*body.scale,y=Math.sin(body.angle)*body.ry*body.scale,c=Math.cos(body.tilt),s=Math.sin(body.tilt);
+      body.x=body.centerX+x*c-y*s;body.y=body.centerY+x*s+y*c;
+    }
+    function metadata(body){
+      const parent=parentOf(body),data=base.orbits?.[body.id],p=raw(body.id),q=parent&&raw(parent.id);
+      const radius=q?Math.max(1,Math.hypot(p.x-q.x,p.y-q.y)):Math.max(1,body.rx);
+      body.rx=Math.max(1,finite(data?.rx,radius));body.ry=Math.max(1,finite(data?.ry,radius));body.tilt=finite(data?.tilt,0);body.speed=finite(data?.speed,0);
+      return data;
+    }
+    function limitFor(body){
+      const data=base.orbits?.[body.id],parent=parentOf(body),p=raw(body.id),q=parent&&raw(parent.id);
+      const natural=Math.max(body.readableRadius,data?Math.max(body.rx,body.ry):q?Math.hypot(p.x-q.x,p.y-q.y):0);
+      const result=Math.max(natural+40,Math.max(width,height)*LENGTH_LIMIT);
+      tethers[body.id]={parentId:body.parentId,baseRadius:natural,maxRadius:result,softStart:result*.66};
+      return result;
+    }
+    function confine(body){
+      const rect=safeRect(),r=Math.min(base.positions[body.id].r,rect.w*.45,rect.h*.45);
+      const x=clamp(body.x,rect.x+r,rect.x+rect.w-r),y=clamp(body.y,rect.y+r,rect.y+rect.h-r);
+      if(x!==body.x&&body.vx*(body.x-x)>0)body.vx=0;
+      if(y!==body.y&&body.vy*(body.y-y)>0)body.vy=0;
+      body.x=x;body.y=y;
+    }
+    function constrainPointer(body,x,y){
+      const parent=parentOf(body);
+      if(parent){
+        const dx=x-parent.x,dy=y-parent.y,d=Math.hypot(dx,dy),max=limitFor(body),start=max*.66;
+        if(d>start){const radial=start+(max-start)*Math.tanh((d-start)/(max-start));x=parent.x+dx/d*radial;y=parent.y+dy/d*radial;}
+      }
+      const p=base.positions[body.id],rect=safeRect(),r=Math.min(p.r,rect.w*.45,rect.h*.45);
+      return {x:clamp(x,rect.x+r,rect.x+rect.w-r),y:clamp(y,rect.y+r,rect.y+rect.h-r)};
+    }
+    function applyDrag(){
+      if(!drag?.dragged)return;
+      const body=bodies.get(drag.id);if(!visible(body))return;
+      const p=constrainPointer(body,drag.pointerX+drag.grabX,drag.pointerY+drag.grabY);
+      body.x=p.x;body.y=p.y;body.vx=body.vy=0;body.blend=0;rebaseOrbit(body);return p;
+    }
+    function addSample(p,time){
+      if(!drag||!p)return;
+      drag.samples.push({x:p.x,y:p.y,time});
+      while(drag.samples.length>2&&drag.samples[1].time<time-110)drag.samples.shift();
+    }
+    function begin(id,x,y,timeMs){
+      const body=bodies.get(id);
+      if(drag||!visible(body)||!latest||!Number.isFinite(x)||!Number.isFinite(y))return false;
+      const time=finite(timeMs,0);body.vx=body.vy=0;
+      drag={id,startX:x,startY:y,pointerX:x,pointerY:y,grabX:body.x-x,grabY:body.y-y,started:time,lastTime:time,lastMotionTime:time,dragged:false,samples:[{x:body.x,y:body.y,time}]};
+      return true;
+    }
+    function move(x,y,timeMs){
+      if(!drag||!Number.isFinite(x)||!Number.isFinite(y))return;
+      const time=Math.max(drag.lastTime,finite(timeMs,drag.lastTime+16));
+      if(Math.hypot(x-drag.pointerX,y-drag.pointerY)>.25)drag.lastMotionTime=time;
+      drag.pointerX=x;drag.pointerY=y;drag.lastTime=time;
+      if(!drag.dragged&&Math.hypot(x-drag.startX,y-drag.startY)>THRESHOLD)drag.dragged=true;
+      if(drag.dragged)addSample(applyDrag(),time);
+    }
+    function end(timeMs){
+      if(!drag)return {dragged:false};
+      const active=drag,body=bodies.get(active.id),time=Math.max(active.lastTime,finite(timeMs,active.lastTime));
+      let vx=0,vy=0;
+      if(active.dragged&&time-active.lastMotionTime<STOP_DELAY){
+        const final=active.samples[active.samples.length-1],cutoff=final.time-100;let first=active.samples[0];
+        for(let i=1;i<active.samples.length;i++){
+          const next=active.samples[i];if(next.time<=cutoff){first=next;continue;}
+          if(first.time<cutoff&&next.time>first.time){const amount=(cutoff-first.time)/(next.time-first.time);first={x:first.x+(next.x-first.x)*amount,y:first.y+(next.y-first.y)*amount,time:cutoff};}
+          break;
+        }
+        const seconds=(final.time-first.time)/1000;if(seconds>.008){vx=(final.x-first.x)/seconds;vy=(final.y-first.y)/seconds;}
+      }
+      body.vx=finite(vx);body.vy=finite(vy);capVelocity(body);if(active.dragged){body.blend=0;rebaseOrbit(body)}drag=null;
+      return {dragged:active.dragged,id:active.id,vx:body.vx,vy:body.vy};
+    }
+    function cancel(){drag=null;for(const body of bodies.values())body.vx=body.vy=body.cvx=body.cvy=0}
+    function mobility(body){return drag?.dragged&&drag.id===body.id?0:body.kind==='section'?1:.20}
+    function contacts(shown,seconds){
+      if(seconds<=0)return;
+      const shifts=new Map(shown.map(body=>[body.id,{x:0,y:0}])),response=1-Math.exp(-CONTACT_RESPONSE*seconds);
+      for(let i=0;i<shown.length;i++)for(let j=i+1;j<shown.length;j++){
+        const a=shown[i],b=shown[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
+        if(d<1e-7){const angle=(i*2.399963229728653+j*1.61803398875);dx=Math.cos(angle);dy=Math.sin(angle);d=1;}
+        const penetration=base.positions[a.id].r+base.positions[b.id].r+CONTACT_GAP-d;
+        if(penetration<=.005)continue;
+        const ma=mobility(a),mb=mobility(b),total=ma+mb;if(!total)continue;
+        const nx=dx/d,ny=dy/d,push=penetration*response,sa=shifts.get(a.id),sb=shifts.get(b.id);
+        sa.x-=nx*push*ma/total;sa.y-=ny*push*ma/total;sb.x+=nx*push*mb/total;sb.y+=ny*push*mb/total;
+        // Absorb approaching inertia. No collision impulse is passed down a chain.
+        const damp=1-Math.exp(-18*seconds),va=a.vx*nx+a.vy*ny,vb=b.vx*nx+b.vy*ny;
+        if(ma&&va>0){a.vx-=nx*va*damp;a.vy-=ny*va*damp}
+        if(mb&&vb<0){b.vx-=nx*vb*damp;b.vy-=ny*vb*damp}
+      }
+      for(const body of shown){
+        const shift=shifts.get(body.id),distance=Math.hypot(shift.x,shift.y),limit=CONTACT_SPEED*seconds,scale=distance>limit?limit/distance:1;
+        body.x+=shift.x*scale;body.y+=shift.y*scale;confine(body);rebaseOrbit(body);
+      }
+    }
+    function tether(body,seconds){
+      const parent=parentOf(body);if(!parent||seconds<=0)return;
+      const dx=body.x-parent.x,dy=body.y-parent.y,d=Math.hypot(dx,dy),max=limitFor(body);
+      if(d<=max||d<1)return;
+      const pull=Math.min((d-max)*(1-Math.exp(-8*seconds)),140*seconds),nx=dx/d,ny=dy/d;
+      body.x-=nx*pull;body.y-=ny*pull;
+      const outward=body.vx*nx+body.vy*ny;if(outward>0){const damp=1-Math.exp(-12*seconds);body.vx-=nx*outward*damp;body.vy-=ny*outward*damp;}
+    }
+    function integrate(shown,seconds,angleDeltas){
+      for(const body of shown){
+        if(body.kind==='section'){
+          const parent=parentOf(body);
+          if(parent){
+            const oldX=body.centerX,oldY=body.centerY;
+            body.cvx+=((parent.x-body.centerX)*58-body.cvx*14)*seconds;
+            body.cvy+=((parent.y-body.centerY)*58-body.cvy*14)*seconds;
+            const centerSpeed=Math.hypot(body.cvx,body.cvy),maximum=280;if(centerSpeed>maximum){body.cvx*=maximum/centerSpeed;body.cvy*=maximum/centerSpeed;}
+            body.centerX+=body.cvx*seconds;body.centerY+=body.cvy*seconds;
+            if(Math.hypot(parent.x-body.centerX,parent.y-body.centerY)<.01&&Math.hypot(body.cvx,body.cvy)<.03){body.centerX=parent.x;body.centerY=parent.y;body.cvx=body.cvy=0;}
+            body.x+=body.centerX-oldX;body.y+=body.centerY-oldY;
+          }
+        }
+        if(drag?.dragged&&drag.id===body.id){applyDrag();continue;}
+        if(body.kind==='section'){
+          rebaseOrbit(body);body.blend=Math.min(1,body.blend+seconds/1.2);
+          body.angle+=(angleDeltas.get(body.id)||0)*smooth(body.blend);putOnOrbit(body);
+        }
+        const damping=Math.exp(-(body.kind==='section'?3.7:3.25)*seconds);
+        body.vx*=damping;body.vy*=damping;if(Math.hypot(body.vx,body.vy)<.10)body.vx=body.vy=0;
+        capVelocity(body);body.x+=body.vx*seconds;body.y+=body.vy*seconds;
+        tether(body,seconds);confine(body);rebaseOrbit(body);
+      }
+      contacts(shown,seconds);applyDrag();
+    }
+    function prepare(delta){
+      const shown=order.map(node=>bodies.get(node.id)).filter(visible),angleDeltas=new Map();
+      // Major titles are independent anchors even if content still has a historical parentId.
+      for(const body of shown.filter(body=>body.kind!=='section')){
+        const p=base.positions[body.id],r=raw(body.id);
+        if(!body.initialized){body.x=p.x;body.y=p.y;body.initialized=true;}
+        else if(delta>0&&body.lastRaw){body.x+=r.x-body.lastRaw.x;body.y+=r.y-body.lastRaw.y;}
+        body.lastRaw={x:r.x,y:r.y};if(resized)confine(body);
+      }
+      for(const body of shown.filter(body=>body.kind==='section')){
+        const p=base.positions[body.id],parent=parentOf(body),data=metadata(body);
+        if(!body.initialized){body.x=p.x;body.y=p.y;body.centerX=parent?parent.x:p.x;body.centerY=parent?parent.y:p.y;body.initialized=true;body.readableRadius=parent?Math.hypot(body.x-parent.x,body.y-parent.y):0;}
+        const angle=finite(data?.angle,0),change=body.lastAngle===null?0:angle-body.lastAngle;
+        // A pure snapshot or debug phase jump must not cause a hidden catch-up jump.
+        angleDeltas.set(body.id,delta>0?clamp(change,-Math.abs(body.speed)*delta*1.5,Math.abs(body.speed)*delta*1.5):0);
+        body.lastAngle=angle;if(resized){confine(body);body.readableRadius=parent?Math.hypot(body.x-parent.x,body.y-parent.y):0;}rebaseOrbit(body);limitFor(body);
+      }
+      resized=false;return {shown,angleDeltas};
+    }
+    function step(baseLayout,dt){
+      if(!baseLayout?.positions)return baseLayout;
+      base=baseLayout;width=Math.max(1,finite(base.width,width));height=Math.max(1,finite(base.height,height));
+      const delta=clamp(finite(dt,0),0,.05),prepared=prepare(delta),steps=Math.max(1,Math.ceil(delta/.008));
+      if(delta>0){for(const [id,angle] of prepared.angleDeltas)prepared.angleDeltas.set(id,angle/steps);for(let i=0;i<steps;i++)integrate(prepared.shown,delta/steps,prepared.angleDeltas);}
+      const result=clone(baseLayout);for(const body of prepared.shown)result.positions[body.id]=position(body);
+      latest=result;return result;
+    }
+    function resize(w,h){
+      const nextW=Math.max(1,finite(w,width)),nextH=Math.max(1,finite(h,height)),sx=nextW/Math.max(1,width),sy=nextH/Math.max(1,height);
+      cancel();for(const body of bodies.values()){body.x*=sx;body.y*=sy;body.centerX*=sx;body.centerY*=sy;body.lastRaw=null;body.lastAngle=null;}
+      width=nextW;height=nextH;base=null;latest=null;resized=true;
+    }
+    function snapshot(){
+      const out={};for(const body of bodies.values()){
+        const p=visible(body)&&body.initialized?position(body):null,r=p?raw(body.id):null,parent=parentOf(body),q=parent&&raw(parent.id);
+        const followX=body.kind==='section'&&q?body.centerX-q.x:0,followY=body.kind==='section'&&q?body.centerY-q.y:0;
+        out[body.id]={id:body.id,kind:body.kind,parentId:body.parentId,offsetX:p?p.x-r.x:0,offsetY:p?p.y-r.y:0,ownX:p?p.x-r.x-followX:0,ownY:p?p.y-r.y-followY:0,vx:body.vx,vy:body.vy,followX,followY,followVX:body.cvx,followVY:body.cvy,x:p?.x??null,y:p?.y??null,orbit:body.kind==='section'?{angle:body.angle,radiusScale:body.scale,rx:body.rx,ry:body.ry,tilt:body.tilt,blend:body.blend,centerX:body.centerX,centerY:body.centerY}:null};
+      }
+      return {bodies:out,tethers:clone(tethers),activeDrag:drag?{id:drag.id,dragged:drag.dragged,pointerX:drag.pointerX,pointerY:drag.pointerY,lastMotionTime:drag.lastMotionTime}:null,width,height};
+    }
+    return Object.freeze({step,begin,move,end,cancel,resize,snapshot,isDragging:()=>Boolean(drag?.dragged)});
+  }
+  global.TRIPMotion=Object.freeze({create});
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+/* Tiny motion for stable focus/reading views. time is milliseconds; dt is seconds.
+ * Only position x/y values are changed. Text panels and anchors stay unchanged.
+ */
+(function (global) {
+  'use strict';
+  const MAX_OFFSET=7.5, PANEL_GAP=10, VISIBLE=.02;
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  const finite=(n,fallback)=>Number.isFinite(n)?n:fallback;
+  const smooth=n=>{n=clamp(n,0,1);return n*n*(3-2*n)};
+  function seed(text){let h=2166136261;for(const c of String(text)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967296}
+  function parameters(id){return {phase:seed(id+':phase')*Math.PI*2,phaseY:seed(id+':phase-y')*Math.PI*2,periodX:9+seed(id+':period-x')*8,periodY:10+seed(id+':period-y')*8,ampX:.78+seed(id+':amplitude-x')*.50,ampY:.78+seed(id+':amplitude-y')*.50,reach:300+seed(id+':reach')*30}}
+  function newState(id){return {id,x:0,y:0,vx:0,vy:0,targetX:0,targetY:0,appliedX:0,appliedY:0,parameters:parameters(id)}}
+  function copyLayout(base){
+    const positions={};for(const [id,p] of Object.entries(base.positions||{}))positions[id]={...p};
+    return {...base,positions};
+  }
+  function inside(point,safe){return !safe||(point.x-point.r>=safe.x-1e-7&&point.x+point.r<=safe.x+safe.w+1e-7&&point.y-point.r>=safe.y-1e-7&&point.y+point.r<=safe.y+safe.h+1e-7)}
+  function hitsPanel(point,panel){return Boolean(panel&&point.x+point.r+PANEL_GAP>panel.x+1e-7&&point.x-point.r-PANEL_GAP<panel.x+panel.w-1e-7&&point.y+point.r+PANEL_GAP>panel.y+1e-7&&point.y-point.r-PANEL_GAP<panel.y+panel.h-1e-7)}
+  function limited(dx,dy){const length=Math.hypot(dx,dy);if(length>MAX_OFFSET)return {x:dx/length*MAX_OFFSET,y:dy/length*MAX_OFFSET};return {x:dx,y:dy}}
+  function constrain(origin,offset,safe,panel){
+    let bounded=limited(offset.x,offset.y);
+    let point={x:origin.x+bounded.x,y:origin.y+bounded.y,r:origin.r};
+    if(safe){
+      point.x=clamp(point.x,safe.x+point.r,safe.x+safe.w-point.r);
+      point.y=clamp(point.y,safe.y+point.r,safe.y+safe.h-point.r);
+    }
+    bounded=limited(point.x-origin.x,point.y-origin.y);
+    point.x=origin.x+bounded.x;point.y=origin.y+bounded.y;
+    if(!hitsPanel(point,panel))return bounded;
+    // Keep tangent movement when the reading boundary blocks one component.
+    const candidates=[
+      {x:panel.x-origin.r-PANEL_GAP,y:point.y,r:origin.r},
+      {x:panel.x+panel.w+origin.r+PANEL_GAP,y:point.y,r:origin.r},
+      {x:point.x,y:panel.y-origin.r-PANEL_GAP,r:origin.r},
+      {x:point.x,y:panel.y+panel.h+origin.r+PANEL_GAP,r:origin.r}
+    ].filter(p=>inside(p,safe)&&!hitsPanel(p,panel)&&Math.hypot(p.x-origin.x,p.y-origin.y)<=MAX_OFFSET+1e-7);
+    candidates.sort((a,b)=>Math.hypot(a.x-point.x,a.y-point.y)-Math.hypot(b.x-point.x,b.y-point.y));
+    if(candidates.length)return {x:candidates[0].x-origin.x,y:candidates[0].y-origin.y};
+    for(let factor=.5;factor>=1/1024;factor*=.5){
+      const p={x:origin.x+bounded.x*factor,y:origin.y+bounded.y*factor,r:origin.r};
+      if(inside(p,safe)&&!hitsPanel(p,panel))return {x:bounded.x*factor,y:bounded.y*factor};
+    }
+    return {x:0,y:0};
+  }
+  function overlap(a,b){return Math.hypot(a.origin.x+a.offset.x-b.origin.x-b.offset.x,a.origin.y+a.offset.y-b.origin.y-b.offset.y)<a.origin.r+b.origin.r-1e-7}
+
+  function create(options){
+    options=options||{};
+    const states=new Map();
+    for(const node of options.nodes||[]){const id=typeof node==='string'?node:node.id;states.set(id,newState(id))}
+    let lastTime=0,hoverHeld=null,heldOffset=null;
+    function stateFor(id){if(!states.has(id))states.set(id,newState(id));return states.get(id)}
+    function reset(){for(const id of states.keys())states.set(id,newState(id));lastTime=0;hoverHeld=null;heldOffset=null}
+    function snapshot(){
+      const appliedOffsets={},velocities={},targets={};
+      for(const [id,s] of states){appliedOffsets[id]={x:s.appliedX,y:s.appliedY};velocities[id]={x:s.vx,y:s.vy};targets[id]={x:s.targetX,y:s.targetY}}
+      return {timeMs:lastTime,appliedOffsets,offsets:appliedOffsets,velocities,targets,hoverHeld};
+    }
+    function step(base,settings){
+      if(!base||!base.positions)return base;
+      settings=settings||{};
+      const result=copyLayout(base),time=finite(settings.time,0),seconds=time*.001;
+      const dt=clamp(finite(settings.dt,1/60),0,.08),pointer=settings.pointer||{};
+      const pointerActive=Boolean(pointer.active&&Number.isFinite(pointer.x)&&Number.isFinite(pointer.y));
+      lastTime=time;
+      if(settings.reducedMotion){
+        for(const s of states.values()){s.x=s.y=s.vx=s.vy=s.targetX=s.targetY=s.appliedX=s.appliedY=0}
+        hoverHeld=null;heldOffset=null;
+        return result;
+      }
+      // Hold the last verified position rather than chasing a cursor inside the bubble.
+      // The caller keeps base fixed while this helper is active and resets on layout changes.
+      const hoverPoint=pointerActive&&base.positions[pointer.hoveredId];
+      const nextHeld=hoverPoint&&hoverPoint.opacity>VISIBLE&&hoverPoint.r>0?pointer.hoveredId:null;
+      if(nextHeld!==hoverHeld){
+        hoverHeld=nextHeld;
+        const s=hoverHeld===null?null:stateFor(hoverHeld);
+        heldOffset=s?{x:s.appliedX,y:s.appliedY}:null;
+      }
+      const visible=[];
+      for(const [id,p] of Object.entries(base.positions)){
+        const s=stateFor(id);
+        if(!(p.opacity>VISIBLE&&p.r>0&&Number.isFinite(p.x)&&Number.isFinite(p.y))){s.x=s.y=s.vx=s.vy=s.targetX=s.targetY=s.appliedX=s.appliedY=0;continue;}
+        const params=s.parameters;
+        const px=seconds/params.periodX*Math.PI*2,py=seconds/params.periodY*Math.PI*2;
+        let tx=params.ampX*(.77*Math.sin(px+params.phase)+.23*Math.sin(px*1.39+params.phaseY));
+        let ty=params.ampY*(.77*Math.cos(py+params.phaseY)+.23*Math.cos(py*1.27+params.phase));
+        if(pointerActive){
+          let dx=p.x-pointer.x,dy=p.y-pointer.y,distance=Math.hypot(dx,dy);
+          if(distance<.001){dx=Math.cos(params.phase);dy=Math.sin(params.phase);distance=1;}
+          const amount=6.5*(1-smooth(distance/params.reach));
+          tx+=dx/distance*amount;ty+=dy/distance*amount;
+        }
+        const held=id===hoverHeld,previous={x:s.appliedX,y:s.appliedY};
+        const target=held?heldOffset:limited(tx,ty);s.targetX=target.x;s.targetY=target.y;
+        const substeps=Math.max(1,Math.ceil(dt/(1/120))),h=dt/substeps;
+        if(held){s.x=heldOffset.x;s.y=heldOffset.y;s.vx=s.vy=0}
+        else for(let i=0;i<substeps;i++){
+          s.vx+=((target.x-s.x)*35-s.vx*12.2)*h;
+          s.vy+=((target.y-s.y)*35-s.vy*12.2)*h;
+          s.x+=s.vx*h;s.y+=s.vy*h;
+        }
+        visible.push({id,origin:p,state:s,held,previous,offset:constrain(p,{x:s.x,y:s.y},base.safeRect,base.panel)});
+      }
+      // Only participants in a collision lose amplitude; free bubbles keep moving.
+      for(let pass=0;pass<8;pass++){
+        let changed=false;
+        for(let i=0;i<visible.length;i++)for(let j=i+1;j<visible.length;j++){
+          const a=visible[i],b=visible[j];if(!overlap(a,b))continue;
+          const ao=a.offset,bo=b.offset;
+          let resolved=false;
+          for(let factor=.5;factor>=1/256;factor*=.5){
+            // Both previous offsets form a known safe pair. A held bubble stays
+            // exactly there while only its moving neighbor gives up this frame's step.
+            a.offset=a.held?a.previous:constrain(a.origin,{x:a.previous.x+(ao.x-a.previous.x)*factor,y:a.previous.y+(ao.y-a.previous.y)*factor},base.safeRect,base.panel);
+            b.offset=b.held?b.previous:constrain(b.origin,{x:b.previous.x+(bo.x-b.previous.x)*factor,y:b.previous.y+(bo.y-b.previous.y)*factor},base.safeRect,base.panel);
+            if(!overlap(a,b)){resolved=true;break;}
+          }
+          if(!resolved){a.offset=a.previous;b.offset=b.previous}
+          changed=true;
+        }
+        for(const body of visible)body.offset=constrain(body.origin,body.offset,base.safeRect,base.panel);
+        if(!changed)break;
+      }
+      // In a dense contact chain the previous whole layout is still feasible.
+      // Never reset a held bubble to base, which would visibly jump under the cursor.
+      let conflict=false;
+      for(let i=0;i<visible.length;i++)for(let j=i+1;j<visible.length;j++)if(overlap(visible[i],visible[j]))conflict=true;
+      if(conflict)for(const body of visible)body.offset=body.previous;
+      for(const body of visible){
+        const s=body.state,offset=body.offset;
+        if(Math.abs(s.x-offset.x)>.0001)s.vx*=.2;
+        if(Math.abs(s.y-offset.y)>.0001)s.vy*=.2;
+        s.x=s.appliedX=offset.x;s.y=s.appliedY=offset.y;
+        result.positions[body.id].x=body.origin.x+offset.x;
+        result.positions[body.id].y=body.origin.y+offset.y;
+      }
+      return result;
+    }
+    return Object.freeze({step,reset,snapshot});
+  }
+  global.TRIPAmbient=Object.freeze({create});
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+(function (global) {
+  'use strict';
+
+  // All drawing is seeded and happens only when the public state changes.
+  var TWO_PI = Math.PI * 2;
+  var MAX_DPR = 1.5;
+
+  function random(seed) {
+    return function () {
+      seed |= 0;
+      seed = (seed + 0x6D2B79F5) | 0;
+      var value = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      value ^= value + Math.imul(value ^ (value >>> 7), 61 | value);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function gaussian(rng) {
+    return Math.sqrt(-2 * Math.log(Math.max(0.000001, rng()))) *
+      Math.cos(TWO_PI * rng());
+  }
+
+  function rgba(color, alpha) {
+    return 'rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + alpha + ')';
+  }
+
+  function dimension(value) {
+    value = Number(value);
+    return Number.isFinite(value) && value > 0 ? value : 1;
+  }
+
+  function mount(canvas) {
+    if (!canvas || typeof canvas.getContext !== 'function') {
+      throw new TypeError('TRIPBackground.mount requires a canvas.');
+    }
+    var ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) throw new Error('A 2D canvas context is required.');
+
+    var width = 0;
+    var height = 0;
+    var dpr = 0;
+    var quiet = false;
+    var enabled = true;
+
+    function render() {
+      if (!width || !height) return;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (!enabled) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      var area = width * height;
+      var shortSide = Math.min(width, height);
+      var diagonal = Math.sqrt(width * width + height * height);
+      var angle = -Math.atan2(height * 0.78, width);
+      var cosine = Math.cos(angle);
+      var sine = Math.sin(angle);
+      var bandWidth = Math.min(shortSide * 0.24, 235);
+      var centerX = width * 0.50;
+      var centerY = height * 0.51;
+      var cloudGain = quiet ? 0.13 : 1;
+      var starGain = quiet ? 0.22 : 1;
+
+      function onBand(along, across) {
+        return {
+          x: centerX + cosine * along - sine * across,
+          y: centerY + sine * along + cosine * across
+        };
+      }
+
+      function centralDimming(x, y) {
+        var nx = (x - width * 0.50) / Math.max(1, width * 0.32);
+        var ny = (y - height * 0.51) / Math.max(1, height * 0.36);
+        return 0.50 + 0.50 * Math.min(1, Math.sqrt(nx * nx + ny * ny));
+      }
+
+      // Elliptical gradients create the clouds without shadow blur or filters.
+      function fog(x, y, rx, ry, rotation, color, opacity) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.scale(Math.max(1, rx), Math.max(1, ry));
+        var glow = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+        glow.addColorStop(0, rgba(color, opacity));
+        glow.addColorStop(0.28, rgba(color, opacity * 0.72));
+        glow.addColorStop(0.64, rgba(color, opacity * 0.23));
+        glow.addColorStop(1, rgba(color, 0));
+        ctx.fillStyle = glow;
+        ctx.fillRect(-1, -1, 2, 2);
+        ctx.restore();
+      }
+
+      var rng = random(0x54A9F21C);
+      var cloudColors = [[30, 113, 150], [67, 68, 151], [102, 49, 145], [24, 103, 129]];
+
+      // A broad bed joins cyan, blue and violet wisps into one diagonal galaxy.
+      fog(centerX, centerY, diagonal * 0.70, bandWidth * 1.35,
+        angle, [32, 58, 97], 0.29 * cloudGain);
+
+      for (var cloud = 0; cloud < 54; cloud++) {
+        var along = (rng() - 0.5) * diagonal * 1.30;
+        var across = gaussian(rng) * bandWidth * 0.46;
+        var point = onBand(along, across);
+        var reach = (0.08 + rng() * 0.14) * diagonal;
+        var depth = bandWidth * (0.26 + rng() * 0.55);
+        var color = cloudColors[Math.floor(rng() * cloudColors.length)];
+        var strength = (0.14 + rng() * 0.19) * cloudGain *
+          centralDimming(point.x, point.y);
+        fog(point.x, point.y, reach, depth, angle + (rng() - 0.5) * 0.36,
+          color, strength);
+      }
+
+      // Broken dark lanes soften the band and keep its centre from looking solid.
+      rng = random(0x31B7D5E2);
+      for (var lane = 0; lane < 15; lane++) {
+        var lanePoint = onBand((rng() - 0.5) * diagonal * 1.18,
+          (rng() - 0.5) * bandWidth * 0.58);
+        fog(lanePoint.x, lanePoint.y,
+          diagonal * (0.055 + rng() * 0.10), bandWidth * (0.10 + rng() * 0.17),
+          angle - 0.08, [0, 0, 0], 0.24 + rng() * 0.24);
+      }
+
+      function star(x, y, radius, opacity, color, halo) {
+        if (x < -4 || y < -4 || x > width + 4 || y > height + 4) return;
+        opacity *= starGain * centralDimming(x, y);
+        if (halo) {
+          fog(x, y, radius * 5.5, radius * 5.5, 0, color, opacity * 0.15);
+        }
+        ctx.fillStyle = rgba(color, opacity);
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TWO_PI);
+        ctx.fill();
+      }
+
+      // The open field stays sparse; even the brightest stars have a cool tint.
+      rng = random(0x19C4A8B3);
+      var fieldCount = Math.min(1450, Math.round(area / 2200));
+      var starColors = [[148, 177, 209], [171, 187, 215], [126, 162, 204], [169, 156, 202]];
+      for (var field = 0; field < fieldCount; field++) {
+        var x = rng() * width;
+        var y = rng() * height;
+        var brightness = rng();
+        var radius = brightness > 0.982 ? 1.12 : 0.30 + rng() * 0.43;
+        var opacity = brightness > 0.982 ? 0.86 : 0.13 + rng() * 0.39;
+        star(x, y, radius, opacity,
+          starColors[Math.floor(rng() * starColors.length)], brightness > 0.982);
+      }
+
+      // Tiny distant stars add depth inside the cloud band without a white strip.
+      rng = random(0x6A903D17);
+      var bandCount = Math.min(700, Math.round(area / 3600));
+      for (var speck = 0; speck < bandCount; speck++) {
+        var location = onBand((rng() - 0.5) * diagonal * 1.28,
+          gaussian(rng) * bandWidth * 0.60);
+        star(location.x, location.y, 0.22 + rng() * 0.34,
+          0.12 + rng() * 0.33, [135, 175, 217], false);
+      }
+
+      // A gentle black vignette leaves the edges and bubble-reading area quiet.
+      var vignette = ctx.createRadialGradient(centerX, centerY, shortSide * 0.17,
+        centerX, centerY, diagonal * 0.62);
+      vignette.addColorStop(0, 'rgba(0,0,0,0)');
+      vignette.addColorStop(0.55, 'rgba(0,0,0,0.03)');
+      vignette.addColorStop(1, 'rgba(0,0,0,0.40)');
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function resize(nextWidth, nextHeight) {
+      nextWidth = dimension(nextWidth);
+      nextHeight = dimension(nextHeight);
+      var nextDpr = Math.min(MAX_DPR, Math.max(1, Number(global.devicePixelRatio) || 1));
+      if (width === nextWidth && height === nextHeight && dpr === nextDpr) return;
+      width = nextWidth;
+      height = nextHeight;
+      dpr = nextDpr;
+      canvas.width = Math.max(1, Math.round(width * dpr));
+      canvas.height = Math.max(1, Math.round(height * dpr));
+      render();
+    }
+
+    function setQuiet(value) {
+      value = Boolean(value);
+      if (quiet === value) return;
+      quiet = value;
+      render();
+    }
+
+    function setEnabled(value) {
+      value = Boolean(value);
+      if (enabled === value) return;
+      enabled = value;
+      render();
+    }
+
+    return Object.freeze({ resize: resize, setQuiet: setQuiet, setEnabled: setEnabled });
+  }
+
+  global.TRIPBackground = Object.freeze({ mount: mount });
+})(window);
+
+</script>
+<script>
+(function (global) {
+  'use strict';
+
+  var SVG = 'http://www.w3.org/2000/svg';
+  var TAU = Math.PI * 2;
+  var SAMPLES = 40;
+  var instance = 0;
+
+  function clamp(value, low, high) { return Math.min(high, Math.max(low, value)); }
+  function finite(value, fallback) { return Number.isFinite(Number(value)) ? Number(value) : fallback; }
+  function number(value) { return Math.round(value * 100) / 100; }
+
+  function random(seed) {
+    return function () {
+      seed = (seed + 0x6D2B79F5) | 0;
+      var value = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      value ^= value + Math.imul(value ^ (value >>> 7), 61 | value);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function hash(value) {
+    var text = String(value == null ? 'trip' : value);
+    var seed = 2166136261;
+    for (var i = 0; i < text.length; i++) seed = Math.imul(seed ^ text.charCodeAt(i), 16777619);
+    return seed >>> 0;
+  }
+
+  function element(name, attrs, parent) {
+    var node = document.createElementNS(SVG, name);
+    Object.keys(attrs || {}).forEach(function (key) { node.setAttribute(key, attrs[key]); });
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+
+  function set(node, key, value) {
+    value = String(value);
+    if (node.getAttribute(key) !== value) node.setAttribute(key, value);
+  }
+
+  function gradient(defs, name, id, attrs, stops) {
+    attrs.id = id;
+    var node = element(name, attrs, defs);
+    var nodes = stops.map(function (stop) {
+      return element('stop', { offset: stop[0], 'stop-color': stop[1], 'stop-opacity': stop[2] }, node);
+    });
+    return { node: node, stops: nodes };
+  }
+
+  // Gradients accept any CSS colour; related film colours are derived when possible.
+  function palette(color, seed) {
+    color = typeof color === 'string' && color ? color : '#77c9eb';
+    var match = color.match(/^#([\da-f]{3}|[\da-f]{6}|[\da-f]{8})$/i);
+    var rgb;
+    if (match) {
+      var hex = match[1];
+      if (hex.length === 3) hex = hex.replace(/./g, function (digit) { return digit + digit; });
+      rgb = [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
+    } else {
+      match = color.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i);
+      if (match) rgb = [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+    var hue = seed % 360;
+    if (rgb) {
+      var red = rgb[0] / 255, green = rgb[1] / 255, blue = rgb[2] / 255;
+      var max = Math.max(red, green, blue), min = Math.min(red, green, blue), delta = max - min;
+      if (delta) {
+        hue = max === red ? ((green - blue) / delta) % 6 :
+          max === green ? (blue - red) / delta + 2 : (red - green) / delta + 4;
+        hue = (hue * 60 + 360) % 360;
+      }
+    } else {
+      match = color.match(/^hsla?\(\s*([\d.+-]+)/i);
+      if (match) hue = Number(match[1]);
+    }
+    return {
+      primary: color,
+      secondary: 'hsl(' + number((hue + 62) % 360) + ',78%,71%)',
+      tertiary: 'hsl(' + number((hue + 310) % 360) + ',82%,69%)',
+      pearl: 'hsl(' + number(hue % 360) + ',75%,91%)'
+    };
+  }
+
+  function applyPalette(object, color) {
+    var state = object._state;
+    if (state.color === color) return;
+    state.color = color;
+    var colors = palette(color, state.seed);
+    state.colors = colors;
+    var gradients = state.gradients;
+    var bodyColors = [colors.pearl, colors.primary, colors.primary, colors.tertiary, colors.primary];
+    var depthColors = [colors.secondary, colors.secondary, colors.tertiary];
+    var rimColors = [colors.pearl, colors.secondary, colors.primary, colors.tertiary, colors.pearl];
+    gradients.body.stops.forEach(function (stop, index) { set(stop, 'stop-color', bodyColors[index]); });
+    gradients.depth.stops.forEach(function (stop, index) { set(stop, 'stop-color', depthColors[index]); });
+    gradients.rim.stops.forEach(function (stop, index) { set(stop, 'stop-color', rimColors[index]); });
+    gradients.sheen.stops.forEach(function (stop, index) {
+      set(stop, 'stop-color', index === 1 ? colors.pearl : colors.secondary);
+    });
+    set(state.rim, 'stroke', colors.primary);
+    set(state.underArc, 'stroke', colors.tertiary);
+    set(state.fineArc, 'stroke', colors.secondary);
+    state.particles.forEach(function (particle, index) {
+      set(particle.node, 'fill', index % 3 === 0 ? colors.pearl : index % 3 === 1 ? colors.secondary : colors.primary);
+    });
+  }
+
+  function create(svgGroup, options) {
+    if (!svgGroup || typeof svgGroup.appendChild !== 'function') {
+      throw new TypeError('TRIPBubbleFX.create requires an SVG group.');
+    }
+    options = options || {};
+    var seed = hash(options.seed == null ? options.id : options.seed);
+    var rng = random(seed);
+    var id = 'trip-film-' + (++instance) + '-' + seed.toString(36);
+    var group = element('g', { 'pointer-events': 'none', 'aria-hidden': 'true', class: 'trip-bubble-film' }, svgGroup);
+    var defs = element('defs', {}, group);
+    var gradients = {
+      body: gradient(defs, 'radialGradient', id + '-body', { cx: '29%', cy: '24%', r: '84%' }, [
+        ['0%', '#fff', 0.17], ['27%', '#fff', 0.065], ['62%', '#fff', 0.025],
+        ['88%', '#fff', 0.13], ['100%', '#fff', 0.24]
+      ]),
+      depth: gradient(defs, 'radialGradient', id + '-depth', { cx: '67%', cy: '77%', r: '72%' }, [
+        ['0%', '#fff', 0.10], ['56%', '#fff', 0.015], ['100%', '#fff', 0.11]
+      ]),
+      rim: gradient(defs, 'linearGradient', id + '-rim', { x1: '11%', y1: '4%', x2: '85%', y2: '100%' }, [
+        ['0%', '#fff', 0.85], ['24%', '#fff', 0.58], ['48%', '#fff', 0.09],
+        ['77%', '#fff', 0.57], ['100%', '#fff', 0.72]
+      ]),
+      sheen: gradient(defs, 'linearGradient', id + '-sheen', { x1: '0%', y1: '65%', x2: '100%', y2: '12%' }, [
+        ['0%', '#fff', 0], ['48%', '#fff', 0.82], ['100%', '#fff', 0.08]
+      ])
+    };
+
+    var material = element('g', {}, group);
+    // Nested low-opacity strokes create a soft spectral halo without SVG filters.
+    var haloWide = element('path', {
+      fill: 'none', stroke: 'url(#' + id + '-rim)', 'stroke-width': 9,
+      'stroke-linejoin': 'round', opacity: 0.025
+    }, material);
+    var haloNear = element('path', {
+      fill: 'none', stroke: 'url(#' + id + '-rim)', 'stroke-width': 4,
+      'stroke-linejoin': 'round', opacity: 0.05
+    }, material);
+    var surface = element('path', { fill: 'url(#' + id + '-body)', stroke: 'none' }, material);
+    var depth = element('path', { fill: 'url(#' + id + '-depth)', stroke: 'none' }, material);
+    var rim = element('path', { fill: 'none', 'stroke-width': 0.7, 'stroke-opacity': 0.33 }, material);
+    var spectrum = element('path', {
+      fill: 'none', stroke: 'url(#' + id + '-rim)', 'stroke-width': 1.05, 'stroke-linecap': 'round'
+    }, material);
+    var topArc = element('path', {
+      fill: 'none', stroke: 'url(#' + id + '-sheen)', 'stroke-width': 1.22,
+      'stroke-linecap': 'round', opacity: 0.73
+    }, material);
+    var underArc = element('path', {
+      fill: 'none', 'stroke-width': 1.13, 'stroke-linecap': 'round', opacity: 0.50
+    }, material);
+    var fineArc = element('path', {
+      fill: 'none', 'stroke-width': 0.54, 'stroke-linecap': 'round', opacity: 0.50
+    }, material);
+    var particles = [];
+    var particleCount = 8 + (seed % 4);
+    for (var i = 0; i < particleCount; i++) {
+      particles.push({
+        node: element('circle', { r: number(0.35 + rng() * 0.67) }, material),
+        angle: rng() * TAU,
+        gap: 1.5 + rng() * 5.1,
+        alpha: 0.17 + rng() * 0.34,
+        phase: rng() * TAU,
+        speed: 0.55 + rng() * 0.7
+      });
+    }
+
+    var object = {
+      group: group,
+      surface: surface,
+      boundsPadding: 12,
+      _state: {
+        seed: seed, color: null, colors: null, material: material, gradients: gradients,
+        depth: depth, rim: rim, spectrum: spectrum, topArc: topArc, underArc: underArc, fineArc: fineArc,
+        haloWide: haloWide, haloNear: haloNear,
+        particles: particles, phase: rng() * TAU,
+        sx: 0, sy: 0, ss: 0, vx: 0, vy: 0, vs: 0, lastTime: null, shapeKey: '',
+        lastRadius: Math.max(1, finite(options.r, 40)), lastContour: null
+      }
+    };
+    applyPalette(object, options.color || '#77c9eb');
+    return object;
+  }
+
+  function spring(state, tx, ty, ts, time) {
+    if (!time) {
+      state.sx = tx; state.sy = ty; state.ss = ts;
+      state.vx = state.vy = state.vs = 0;
+      state.lastTime = null;
+      return;
+    }
+    var elapsed = state.lastTime == null ? 16 : clamp(time - state.lastTime, 0, 48);
+    state.lastTime = time;
+    var steps = Math.max(1, Math.ceil(elapsed / 12));
+    var dt = elapsed / (1000 * steps);
+    for (var i = 0; i < steps; i++) {
+      state.vx += ((tx - state.sx) * 145 - state.vx * 18) * dt;
+      state.vy += ((ty - state.sy) * 145 - state.vy * 18) * dt;
+      state.vs += ((ts - state.ss) * 125 - state.vs * 17) * dt;
+      state.sx += state.vx * dt;
+      state.sy += state.vy * dt;
+      state.ss += state.vs * dt;
+    }
+    if (Math.abs(state.ss) < 0.00025 && ts === 0 && Math.abs(state.vs) < 0.001) {
+      state.sx = state.sy = state.ss = state.vx = state.vy = state.vs = 0;
+    }
+  }
+
+  function difference(a, b) { return Math.atan2(Math.sin(a - b), Math.cos(a - b)); }
+
+  function points(radius, state, time, selected) {
+    var result = [];
+    var strength = clamp(state.ss, 0, 1.08);
+    var direction = Math.atan2(state.sy, state.sx);
+    var directional = Math.min(1, Math.sqrt(state.sx * state.sx + state.sy * state.sy) * 2.5 /
+      Math.max(0.001, strength));
+    var pull = Math.min(7.2, radius * 0.12) * strength * directional;
+    var phase = time * 0.00042 + state.phase;
+    var organicAmplitude = Math.min(4.6, radius * 0.053) * strength;
+    for (var i = 0; i < SAMPLES; i++) {
+      var theta = i / SAMPLES * TAU;
+      var delta = difference(theta, direction);
+      var local = Math.exp(-(delta * delta) / 0.48);
+      var shoulder = Math.exp(-(delta * delta) / 2.1);
+      // Hover at the centre still yields a slow, soft two/three-lobed membrane.
+      var organic = organicAmplitude * (0.68 * Math.sin(theta * 2 + phase) +
+        0.32 * Math.sin(theta * 3 - phase * 0.66 + state.phase * 0.35));
+      var breath = selected && time ? Math.sin(theta * 3 + time * 0.0008 + state.phase) *
+        Math.min(0.28, radius * 0.004) : 0;
+      var resting = Math.sin(theta * 3 + state.phase) * Math.min(0.32, radius * 0.005);
+      var displacement = pull * (local - 0.15 * shoulder) + organic + breath + resting;
+      // Smooth saturation keeps all stacked motion plus the 4.5px halo in bounds.
+      var r = radius + 7.1 * Math.tanh(displacement / 7.1);
+      // A small tangential lean gives the membrane a yielding, adhesive motion.
+      var lean = pull * 0.09 * Math.sin(delta) * local;
+      result.push({ x: Math.cos(theta) * r - Math.sin(theta) * lean,
+        y: Math.sin(theta) * r + Math.cos(theta) * lean });
+    }
+    return result;
+  }
+
+  // Catmull-Rom to cubic Bézier: smooth circles and smooth open reflection arcs.
+  function path(points, start, count, scale, close) {
+    var n = points.length;
+    function at(index) { return points[((index % n) + n) % n]; }
+    function coordinate(value) { return number(value * scale); }
+    var first = at(start);
+    var d = 'M' + coordinate(first.x) + ',' + coordinate(first.y);
+    for (var i = 0; i < count; i++) {
+      var p0 = at(start + i - 1), p1 = at(start + i), p2 = at(start + i + 1), p3 = at(start + i + 2);
+      d += 'C' + coordinate(p1.x + (p2.x - p0.x) / 6) + ',' + coordinate(p1.y + (p2.y - p0.y) / 6) +
+        ' ' + coordinate(p2.x - (p3.x - p1.x) / 6) + ',' + coordinate(p2.y - (p3.y - p1.y) / 6) +
+        ' ' + coordinate(p2.x) + ',' + coordinate(p2.y);
+    }
+    return d + (close ? 'Z' : '');
+  }
+
+  function update(object, options) {
+    if (!object || !object._state) return;
+    options = options || {};
+    var state = object._state;
+    var radius = Math.max(1, finite(options.r, 40));
+    state.lastRadius = radius;
+    var time = Math.max(0, finite(options.time, 0));
+    var hover = options.hover || {};
+    var strength = clamp(finite(hover.strength, 0), 0, 1);
+    var hx = clamp(finite(hover.x, 0), -1, 1);
+    var hy = clamp(finite(hover.y, 0), -1, 1);
+    var selected = Boolean(options.selected);
+    spring(state, hx * strength, hy * strength, strength, time);
+    applyPalette(object, options.color || state.color || '#77c9eb');
+    set(object.group, 'transform', 'translate(' + number(finite(options.x, 0)) + ',' + number(finite(options.y, 0)) + ')');
+    set(object.group, 'opacity', number(clamp(finite(options.opacity, 1), 0, 1)));
+    set(state.material, 'opacity', number(clamp(finite(options.surfaceOpacity, 1), 0, 1)));
+    set(state.rim, 'stroke-opacity', selected ? 0.56 : 0.33);
+    set(state.spectrum, 'stroke-width', selected ? 1.30 : 1.05);
+    var hoverAmount = clamp(state.ss, 0, 1);
+    set(state.topArc, 'opacity', number(0.73 + hoverAmount * 0.185));
+    set(state.haloWide, 'opacity', number(0.025 + hoverAmount * 0.176 + (selected ? 0.035 : 0)));
+    set(state.haloNear, 'opacity', number(0.05 + hoverAmount * 0.286 + (selected ? 0.045 : 0)));
+    set(state.gradients.body.stops[0], 'stop-opacity', number(0.17 + hoverAmount * 0.055));
+    set(state.gradients.body.stops[3], 'stop-opacity', number(0.13 + hoverAmount * 0.10));
+    set(state.gradients.body.stops[4], 'stop-opacity', number(0.24 + hoverAmount * 0.15));
+
+    var active = Math.abs(state.ss) > 0.00025 || selected;
+    // At rest, shape and particle geometry are reused while the root moves nodes.
+    var phaseKey = active && time ? Math.round(time / 24) : 0;
+    var key = [number(radius), number(state.sx), number(state.sy), number(state.ss), phaseKey, selected].join('|');
+    if (state.shapeKey === key) return;
+    state.shapeKey = key;
+    var contour = points(radius, state, time, selected);
+    state.lastContour = contour;
+    var outline = path(contour, 0, SAMPLES, 1, true);
+    set(object.surface, 'd', outline);
+    set(state.depth, 'd', outline);
+    set(state.rim, 'd', outline);
+    set(state.haloWide, 'd', outline);
+    set(state.haloNear, 'd', outline);
+    // Three broken spectral reflections, and a finer inner echo, leave the rim open.
+    set(state.spectrum, 'd', path(contour, 1, 7, 1, false) + path(contour, 20, 12, 1, false) + path(contour, 35, 3, 1, false));
+    set(state.topArc, 'd', path(contour, 23, 10, 0.972, false));
+    set(state.underArc, 'd', path(contour, 3, 7, 0.976, false));
+    set(state.fineArc, 'd', path(contour, 13, 5, 1.012, false) + path(contour, 28, 5, 0.925, false));
+
+    var direction = Math.atan2(state.sy, state.sx);
+    state.particles.forEach(function (particle) {
+      var angle = particle.angle;
+      var delta = difference(angle, direction);
+      var nearby = Math.exp(-(delta * delta) / 0.60) * clamp(state.ss, 0, 1);
+      var float = active && time ? Math.sin(time * 0.0008 * particle.speed + particle.phase) * 0.9 : 0;
+      var distance = radius + particle.gap + nearby * 2.4 + float;
+      set(particle.node, 'cx', number(Math.cos(angle) * distance));
+      set(particle.node, 'cy', number(Math.sin(angle) * distance));
+      set(particle.node, 'opacity', number(particle.alpha + nearby * 0.17 + (selected ? 0.07 : 0)));
+    });
+  }
+
+  // Local-space ray intersection with the same Catmull-Rom surface drawn above.
+  // Four chord samples per cubic keep the attachment within a fraction of a pixel
+  // of the membrane at normal display sizes, without reading or changing the DOM.
+  function edge(object, angle) {
+    var state = object && object._state;
+    var radius = state ? Math.max(1, finite(state.lastRadius, 40)) : 0;
+    angle = finite(angle, 0);
+    var dx = Math.cos(angle), dy = Math.sin(angle);
+    var contour = state && state.lastContour;
+    if (!contour || contour.length < 3) return { x: dx * radius, y: dy * radius };
+    var count = contour.length, nearest = Infinity;
+    for (var i = 0; i < count; i++) {
+      var p0 = contour[(i + count - 1) % count], p1 = contour[i];
+      var p2 = contour[(i + 1) % count], p3 = contour[(i + 2) % count];
+      var ax = p1.x, ay = p1.y;
+      for (var step = 1; step <= 4; step++) {
+        var t = step / 4, t2 = t * t, t3 = t2 * t;
+        var bx = 0.5 * (2 * p1.x + (-p0.x + p2.x) * t +
+          (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 +
+          (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
+        var by = 0.5 * (2 * p1.y + (-p0.y + p2.y) * t +
+          (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 +
+          (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3);
+        var vx = bx - ax, vy = by - ay, denominator = dx * vy - dy * vx;
+        if (Math.abs(denominator) > 1e-10) {
+          var rayDistance = (ax * vy - ay * vx) / denominator;
+          var segmentAmount = (ax * dy - ay * dx) / denominator;
+          if (rayDistance >= 0 && segmentAmount >= -1e-8 && segmentAmount <= 1 + 1e-8) {
+            nearest = Math.min(nearest, rayDistance);
+          }
+        }
+        ax = bx; ay = by;
+      }
+    }
+    if (!Number.isFinite(nearest)) nearest = radius;
+    return { x: dx * nearest, y: dy * nearest };
+  }
+
+  global.TRIPBubbleFX = Object.freeze({ create: create, update: update, edge: edge });
+})(window);
+
+</script>
+<script>
+/*
+ * BubbleMembrane — small, dependency-free SVG contours for soft circle unions.
+ * Classic script: <script src="membrane.js"><\/script> also works from file://.
+ *
+ * BubbleMembrane.path([{ x, y, r }, ...], {
+ *   smoothness: 12, // Soft-min scale in coordinate/pixel units; 0 = hard union.
+ *   step: 2,        // Desired marching-grid spacing; refined for tiny circles.
+ *   maxCells: 18000,// Grid budget; spacing grows if the bounds exceed it.
+ *   precision: 2,   // SVG decimal places, 0–5.
+ *   curves: true    // Round sampled corners with continuous quadratic curves.
+ * }) -> SVG path data, including Z on every component. Uses nonzero fill rule.
+ *
+ * For a pair of equal circles, a neck exists when the surface gap is less than
+ * 2 * smoothness * ln(2). Shrinking smoothness while separating circles makes
+ * the neck pinch off naturally. Call only during growth/separation animation.
+ */
+(function (global) {
+  "use strict";
+
+  function positive(value, fallback) {
+    return Number.isFinite(value) && value > 0 ? value : fallback;
+  }
+
+  function path(input, options) {
+    options = options || {};
+    if (!Array.isArray(input) || input.length === 0) return "";
+
+    var circles = [];
+    var minRadius = Infinity;
+    var left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+    for (var i = 0; i < input.length; i++) {
+      var circle = input[i];
+      if (!circle || !Number.isFinite(circle.x) || !Number.isFinite(circle.y) ||
+          !Number.isFinite(circle.r) || circle.r <= 0) continue;
+      var clean = { x: circle.x, y: circle.y, r: circle.r };
+      circles.push(clean);
+      minRadius = Math.min(minRadius, clean.r);
+      left = Math.min(left, clean.x - clean.r);
+      top = Math.min(top, clean.y - clean.r);
+      right = Math.max(right, clean.x + clean.r);
+      bottom = Math.max(bottom, clean.y + clean.r);
+    }
+    if (circles.length === 0) return "";
+
+    var precision = Number.isFinite(options.precision)
+      ? Math.max(0, Math.min(5, Math.round(options.precision))) : 2;
+    function number(value) { return String(+value.toFixed(precision)); }
+    function point(p) { return number(p.x) + " " + number(p.y); }
+
+    if (circles.length === 1) {
+      var only = circles[0];
+      var radius = number(only.r);
+      return "M" + number(only.x + only.r) + " " + number(only.y) +
+        "A" + radius + " " + radius + " 0 1 1 " +
+        number(only.x - only.r) + " " + number(only.y) +
+        "A" + radius + " " + radius + " 0 1 1 " +
+        number(only.x + only.r) + " " + number(only.y) + "Z";
+    }
+
+    var smoothness = Number.isFinite(options.smoothness)
+      ? Math.max(0, options.smoothness) : minRadius * 0.22;
+    var step = Math.min(positive(options.step, 2), minRadius * 0.45);
+    var maxCells = Math.max(256, Math.floor(positive(options.maxCells, 18000)));
+    // Outside this margin, even the sum of all soft-min tails is positive.
+    var padding = smoothness * Math.log(circles.length) + step * 3;
+    left -= padding;
+    top -= padding;
+    right += padding;
+    bottom += padding;
+    var width = right - left;
+    var height = bottom - top;
+    step = Math.max(step, Math.sqrt(width * height / maxCells));
+    var columns = Math.max(1, Math.ceil(width / step));
+    var rows = Math.max(1, Math.ceil(height / step));
+    while (columns * rows > maxCells) {
+      step *= Math.max(1.005, Math.sqrt(columns * rows / maxCells));
+      columns = Math.max(1, Math.ceil(width / step));
+      rows = Math.max(1, Math.ceil(height / step));
+    }
+    var dx = width / columns;
+    var dy = height / rows;
+    var stride = columns + 1;
+    var distances = new Float64Array(circles.length);
+    var soft = smoothness > 1e-7;
+
+    function field(x, y) {
+      var nearest = Infinity;
+      for (var c = 0; c < circles.length; c++) {
+        var item = circles[c];
+        var cx = x - item.x, cy = y - item.y;
+        var distance = Math.sqrt(cx * cx + cy * cy) - item.r;
+        distances[c] = distance;
+        if (distance < nearest) nearest = distance;
+      }
+      if (!soft) return nearest;
+      // Subtracting the nearest distance keeps exponentials in [0, 1].
+      var sum = 0;
+      for (var j = 0; j < distances.length; j++) {
+        sum += Math.exp((nearest - distances[j]) / smoothness);
+      }
+      return nearest - smoothness * Math.log(sum);
+    }
+
+    var values = new Float64Array(stride * (rows + 1));
+    for (var y = 0; y <= rows; y++) {
+      for (var x = 0; x <= columns; x++) {
+        var value = field(left + x * dx, top + y * dy);
+        // Give grid-corner coincidences a consistent side of the contour.
+        values[y * stride + x] = value === 0 ? 1e-10 : value;
+      }
+    }
+
+    var vertices = [];
+    var links = [];
+    var edgeVertices = new Map();
+
+    function edgeVertex(edge, x, y, a, b, c, d) {
+      var node, orientation, start, end, sx, sy, ex, ey;
+      if (edge === 0) {
+        node = y * stride + x; orientation = 0;
+        start = a; end = b; sx = x; sy = y; ex = x + 1; ey = y;
+      } else if (edge === 1) {
+        node = y * stride + x + 1; orientation = 1;
+        start = b; end = c; sx = x + 1; sy = y; ex = x + 1; ey = y + 1;
+      } else if (edge === 2) {
+        node = (y + 1) * stride + x; orientation = 0;
+        start = d; end = c; sx = x; sy = y + 1; ex = x + 1; ey = y + 1;
+      } else {
+        node = y * stride + x; orientation = 1;
+        start = a; end = d; sx = x; sy = y; ex = x; ey = y + 1;
+      }
+      var key = node * 2 + orientation;
+      var existing = edgeVertices.get(key);
+      if (existing !== undefined) return existing;
+      var fraction = start / (start - end);
+      fraction = Math.max(1e-9, Math.min(1 - 1e-9, fraction));
+      var index = vertices.length;
+      vertices.push({
+        x: left + (sx + (ex - sx) * fraction) * dx,
+        y: top + (sy + (ey - sy) * fraction) * dy
+      });
+      links.push([]);
+      edgeVertices.set(key, index);
+      return index;
+    }
+
+    var pairs = [null, [0, 3], [0, 1], [1, 3], [1, 2], null, [0, 2], [2, 3],
+      [2, 3], [0, 2], null, [1, 2], [1, 3], [0, 1], [0, 3], null];
+
+    for (var row = 0; row < rows; row++) {
+      for (var column = 0; column < columns; column++) {
+        var offset = row * stride + column;
+        var a = values[offset], b = values[offset + 1];
+        var c = values[offset + stride + 1], d = values[offset + stride];
+        var mask = (a < 0 ? 1 : 0) | (b < 0 ? 2 : 0) |
+          (c < 0 ? 4 : 0) | (d < 0 ? 8 : 0);
+        if (mask === 0 || mask === 15) continue;
+        var segments = pairs[mask];
+        if (mask === 5 || mask === 10) {
+          // Asymptotic decider: resolves saddles consistently at neck pinch-off.
+          var determinant = a * c - b * d;
+          var centerInside = Math.abs(determinant) < 1e-14
+            ? field(left + (column + 0.5) * dx, top + (row + 0.5) * dy) < 0
+            : (mask === 5 ? determinant > 0 : determinant < 0);
+          segments = (mask === 5) === centerInside
+            ? [0, 1, 2, 3] : [0, 3, 1, 2];
+        }
+        for (var pair = 0; pair < segments.length; pair += 2) {
+          var v1 = edgeVertex(segments[pair], column, row, a, b, c, d);
+          var v2 = edgeVertex(segments[pair + 1], column, row, a, b, c, d);
+          links[v1].push(v2);
+          links[v2].push(v1);
+        }
+      }
+    }
+
+    var visited = new Uint8Array(vertices.length);
+    var contours = [];
+    for (var first = 0; first < vertices.length; first++) {
+      if (visited[first] || links[first].length !== 2) continue;
+      var contour = [];
+      var current = first, previous = -1;
+      var closed = false;
+      while (!visited[current]) {
+        visited[current] = 1;
+        contour.push(vertices[current]);
+        var neighbors = links[current];
+        if (neighbors.length !== 2) break;
+        var next = neighbors[0] === previous ? neighbors[1] : neighbors[0];
+        previous = current;
+        current = next;
+        if (current === first) { closed = true; break; }
+      }
+      if (closed && contour.length >= 3) contours.push(contour);
+    }
+
+    function contains(polygon, p) {
+      var inside = false;
+      for (var k = 0, last = polygon.length - 1; k < polygon.length; last = k++) {
+        var p1 = polygon[k], p2 = polygon[last];
+        if ((p1.y > p.y) !== (p2.y > p.y) &&
+            p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    }
+
+    var output = [];
+    for (var ci = 0; ci < contours.length; ci++) {
+      var ring = contours[ci];
+      var area = 0, depth = 0;
+      for (var ri = 0; ri < ring.length; ri++) {
+        var p = ring[ri], q = ring[(ri + 1) % ring.length];
+        area += p.x * q.y - q.x * p.y;
+      }
+      if (Math.abs(area) < dx * dy * 1e-5) continue;
+      for (var oi = 0; oi < contours.length; oi++) {
+        if (oi !== ci && contains(contours[oi], ring[0])) depth++;
+      }
+      // Outer rings clockwise, holes counterclockwise, so normal SVG fill works.
+      if ((area > 0) !== (depth % 2 === 0)) ring.reverse();
+      if (options.curves === false) {
+        output.push("M" + point(ring[0]));
+        for (var pi = 1; pi < ring.length; pi++) output.push("L" + point(ring[pi]));
+      } else {
+        var finalPoint = ring[ring.length - 1];
+        output.push("M" + point({
+          x: (finalPoint.x + ring[0].x) / 2,
+          y: (finalPoint.y + ring[0].y) / 2
+        }));
+        for (var qi = 0; qi < ring.length; qi++) {
+          var control = ring[qi], following = ring[(qi + 1) % ring.length];
+          output.push("Q" + point(control) + " " + point({
+            x: (control.x + following.x) / 2,
+            y: (control.y + following.y) / 2
+          }));
+        }
+      }
+      output.push("Z");
+    }
+    return output.join("");
+  }
+
+  global.BubbleMembrane = Object.freeze({ path: path });
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+(() => {
+  'use strict';
+  const NS='http://www.w3.org/2000/svg',$=id=>document.getElementById(id),data=window.TRIP_CONTENT,nodes=data.nodes;
+  const byId=new Map(nodes.map(n=>[n.id,n])),children=id=>nodes.filter(n=>n.parentId===id);
+  const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),lerp=(a,b,t)=>a+(b-a)*t;
+  const smooth=t=>{t=clamp(t);return t*t*(3-2*t)},ease=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+  const clone=v=>JSON.parse(JSON.stringify(v));
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,motionSpeed=reduced?.14:1;
+  let width=innerWidth,height=innerHeight,phase=0,paused=reduced,cosmic=true,mode='overview',selectedId=null;
+  let view,fromView,toView,focusView,started=0,last=0,expandProgress=0,birthIds=[],transitionEnd='focus',history=[];
+  let readingRect=null,readingOpacity=0,readingWidth=0,readingHeight=0,underlineOffset=60,layoutRevision=0,metricsKey='',resizeFrame=0;
+  let visibleRelations=[],relatedIds=new Set(),previousSelection=null;
+  let steadyView=null,dragOwner=null,suppressPointerClick=false,readingAnchor=null;
+  const pointer={x:0,y:0,active:false,hoveredId:null};
+  const physics=TRIPMotion.create({nodes,width,height}),ambient=TRIPAmbient.create({nodes});
+  const background=TRIPBackground.mount($('universe'));
+  const el=(tag,attrs={},parent)=>{const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(parent)parent.appendChild(n);return n};
+  const measure=document.createElement('canvas').getContext('2d'),labelCache=new Map();
+  function lineage(id){const out=[];let node=byId.get(id);while(node){out.unshift(node);node=byId.get(node.parentId)}return out}
+  function presentText(text){return String(text||'').replace(/已(?:确认|确定)的?/g,'').replace(/待定|未定/g,'暂定')}
+  function caption(node){return presentText(node.compactTitle||node.title).replace(/暂定$/,'')}
+  function markedText(element,text){element.replaceChildren();presentText(text).split(/(暂定)/).forEach(part=>{if(part==='暂定'){const mark=document.createElement('span');mark.className='provisional-inline';mark.textContent=part;element.appendChild(mark)}else element.appendChild(document.createTextNode(part))})}
+  function colorFor(node){const hash=Array.from(node.id).reduce((h,c)=>(Math.imul(h,31)+c.charCodeAt(0))>>>0,7);const colors=node.kind==='root'?['#c7e8ff']:node.domain==='story'?['#e9a5b7','#eab885','#cfa4e5','#edb49f']:node.domain==='expression'?['#bd9ced','#d1b3ee','#e7c0a2']:['#76cbd3','#8bb8ed','#9bb7e3','#85d5c3'];return colors[hash%colors.length]}
+  const bubbles=new Map();
+  for(const node of nodes){
+    const group=el('g',{'data-node-id':node.id,id:'node-'+node.id,class:'node',role:'button',tabindex:-1,'aria-label':node.title},$('bubble-layer'));
+    el('title',{},group).textContent=node.title;
+    const hit=el('circle',{class:'hit-area',r:0},group);
+    const fx=TRIPBubbleFX.create(group,{id:node.id,color:colorFor(node),seed:node.id});
+    const ring=el('circle',{class:'focus-ring'},group),label=el('text',{class:'node-label'},group);
+    const hover={x:0,y:0,strength:0,target:0};
+    const bubble={group,hit,fx,ring,label,node,hover,labelKey:''};bubbles.set(node.id,bubble);
+    group.addEventListener('pointerenter',event=>{hover.target=1;if(event.pointerType!=='touch')pointer.hoveredId=node.id;});group.addEventListener('pointerleave',()=>{hover.target=0;if(pointer.hoveredId===node.id)pointer.hoveredId=null;});
+    group.addEventListener('pointermove',event=>{const p=view.positions[node.id];if(p){hover.x=clamp((event.clientX-p.x)/p.r,-1,1);hover.y=clamp((event.clientY-p.y)/p.r,-1,1)}});
+    group.addEventListener('pointerdown',event=>{
+      if(mode!=='overview'||event.button!==0||!['root','domain','section'].includes(node.kind))return;
+      if(physics.begin(node.id,event.clientX,event.clientY,event.timeStamp)){
+        dragOwner={group,pointerId:event.pointerId};group.setPointerCapture(event.pointerId);event.preventDefault();
+      }
+    });
+    group.addEventListener('click',event=>{if(suppressPointerClick&&event.detail>0){suppressPointerClick=false;event.preventDefault();event.stopPropagation();return;}openNode(node.id)});
+    group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openNode(node.id)}});
+    group.addEventListener('focus',()=>hover.target=1);group.addEventListener('blur',()=>hover.target=0);
+  }
+  const treeEdges=nodes.filter(n=>n.parentId).map(n=>({from:n.parentId,to:n.id,path:el('path',{class:'relationship','data-from':n.parentId,'data-to':n.id},$('links'))}));
+  const relationElements=(data.relations||[]).map(relation=>({relation,path:el('path',{class:'relation-path'},$('relation-layer')),label:el('text',{class:'relation-label'},$('relation-layer'))}));
+  const holes=nodes.map(()=>el('circle',{fill:'black'},$('line-holes')));
+  const readingHoles=nodes.map(()=>el('circle',{fill:'black'},$('reading-line-holes')));
+  function overview(dt=0){return physics.step(TRIPLayout.overview({width,height,nodes,phase}),dt)}
+  view=overview();
+  function busy(){return !['overview','focus','detail'].includes(mode)}
+  function setState(next){mode=next;started=performance.now();if(next==='focus'||next==='detail'){steadyView=clone(view);ambient.reset()}else steadyView=null;$('app').dataset.state=next;updateUI();}
+  function releaseCapture(){if(!dragOwner)return;const {group,pointerId}=dragOwner;if(group.hasPointerCapture(pointerId))group.releasePointerCapture(pointerId);group.removeAttribute('data-dragging');dragOwner=null;delete $('app').dataset.dragging;}
+  function cancelDrag(){physics.cancel();releaseCapture();}
+  document.addEventListener('pointerdown',()=>{suppressPointerClick=false},{capture:true});
+  document.addEventListener('pointermove',event=>{
+    if(event.pointerType!=='touch'){pointer.x=event.clientX;pointer.y=event.clientY;pointer.active=true;}
+    if(!dragOwner||dragOwner.pointerId!==event.pointerId)return;
+    physics.move(event.clientX,event.clientY,event.timeStamp);
+    if(physics.isDragging()){dragOwner.group.dataset.dragging='true';$('app').dataset.dragging='true';event.preventDefault();}
+  },{passive:false});
+  document.addEventListener('pointerup',event=>{if(dragOwner?.pointerId===event.pointerId){const result=physics.end(event.timeStamp);suppressPointerClick=result.dragged;releaseCapture();}if(event.pointerType==='touch')pointer.active=false;});
+  document.addEventListener('pointercancel',event=>{if(dragOwner?.pointerId===event.pointerId)cancelDrag();pointer.active=false;pointer.hoveredId=null;});
+  document.addEventListener('pointerout',event=>{if(!event.relatedTarget){pointer.active=false;pointer.hoveredId=null;}});
+  addEventListener('blur',()=>{cancelDrag();pointer.active=false;pointer.hoveredId=null;});
+  function updateUI(){
+    const atHome=mode==='overview',working=busy();
+    $('orbit-toggle').disabled=!atHome;$('orbit-toggle').textContent=atHome?(paused?'继续公转':'暂停公转'):'公转已暂停';
+    $('home').disabled=atHome||working;$('back').disabled=!history.length||working;
+    $('tagline').textContent=atHome?data.intro:'在梦与现实之间，走近人物的选择与感受';
+    const node=byId.get(selectedId);markedText($('hint'),atHome?'点击走近故事，拖动泡泡感受牵引。':node?.kind==='concept'?'':node?.description||'');
+    $('counter').textContent=node?caption(node):'梦 · 现实 · 自我';
+    const crumbs=$('breadcrumbs');crumbs.replaceChildren();
+    const path=atHome?[]:lineage(selectedId);
+    path.forEach((n,i)=>{if(i){const separator=document.createElement('span');separator.textContent='›';crumbs.appendChild(separator)}const button=document.createElement('button');button.textContent=caption(n);button.disabled=working||n.id===selectedId;button.addEventListener('click',()=>openNode(n.id));crumbs.appendChild(button)});
+    background.setQuiet(mode==='detail'||mode==='detailEntering');
+  }
+  function activeRelations(id){
+    const direct=new Set([id,...children(id).map(n=>n.id)]);
+    const list=(data.relations||[]).filter(r=>direct.has(r.from)||direct.has(r.to));
+    list.sort((a,b)=>(a.from===id||a.to===id?-1:0)-(b.from===id||b.to===id?-1:0));
+    return list.slice(0,width<700?1:3);
+  }
+  function rectHits(p,r,pad=0){return p.x+p.r+pad>r.x&&p.x-p.r-pad<r.x+r.w&&p.y+p.r+pad>r.y&&p.y-p.r-pad<r.y+r.h}
+  function augmentRelations(layout,id){
+    const result=clone(layout),relations=activeRelations(id);relatedIds=new Set();
+    const region=result.graphicRect||result.safeRect;
+    const occupied=Object.values(result.positions).filter(p=>p.opacity>.03);
+    for(const relation of relations){
+      const from=result.positions[relation.from],to=result.positions[relation.to];
+      const targetId=from?.opacity>.03?relation.to:to?.opacity>.03?relation.from:null;
+      if(!targetId||result.positions[targetId]?.opacity>.03)continue;
+      const r=width<700?25:32,pad=width<700?8:13,candidates=[];
+      for(let row=0;row<6;row++)for(let column=0;column<7;column++){
+        const p={x:region.x+r+10+(region.w-2*r-20)*column/6,y:region.y+r+10+(region.h-2*r-20)*row/5,r,opacity:.64,labelVisible:true,related:true};
+        if(p.x-r<region.x||p.x+r>region.x+region.w||p.y-r<region.y||p.y+r>region.y+region.h)continue;
+        if(result.panel&&rectHits(p,result.panel,16))continue;
+        if(occupied.some(o=>Math.hypot(p.x-o.x,p.y-o.y)<p.r+o.r+pad))continue;
+        const edge=Math.min(p.x-region.x,region.x+region.w-p.x,p.y-region.y,region.y+region.h-p.y);candidates.push({p,score:edge});
+      }
+      candidates.sort((a,b)=>a.score-b.score);
+      if(candidates.length){result.positions[targetId]=candidates[0].p;occupied.push(candidates[0].p);relatedIds.add(targetId)}
+    }
+    visibleRelations=relations.filter(r=>result.positions[r.from]?.opacity>.03&&result.positions[r.to]?.opacity>.03);
+    result.visibleIds=nodes.filter(n=>result.positions[n.id]?.opacity>.03).map(n=>n.id);
+    result.relatedIds=Array.from(relatedIds);return result;
+  }
+  function normalizeTransition(a,b){
+    const from=clone(a),to=clone(b);
+    for(const node of nodes){
+      let p=from.positions[node.id],q=to.positions[node.id];
+      if(!p)p=from.positions[node.id]={x:-100,y:-100,r:1,opacity:0};
+      if(!q)q=to.positions[node.id]={...p,opacity:0};
+      if(p.opacity<.02&&q.opacity>.02){let ancestor=node.parentId;while(ancestor&&!(from.positions[ancestor]?.opacity>.02))ancestor=byId.get(ancestor)?.parentId;const origin=from.positions[ancestor]||q;from.positions[node.id]={...origin,r:.15,opacity:0};}
+      if(q.opacity<.02&&p.opacity>.02){let ancestor=node.parentId;while(ancestor&&!(to.positions[ancestor]?.opacity>.02))ancestor=byId.get(ancestor)?.parentId;const end=to.positions[ancestor]||p;to.positions[node.id]={...end,r:.15,opacity:0};}
+    }
+    return {from,to};
+  }
+  function tween(a,b,t){
+    const positions={};for(const n of nodes){const p=a.positions[n.id],q=b.positions[n.id];positions[n.id]={...q,x:lerp(p.x,q.x,t),y:lerp(p.y,q.y,t),r:lerp(p.r,q.r,t),opacity:lerp(p.opacity||0,q.opacity||0,t)}}return {...b,positions};
+  }
+  function remember(){history.push({mode:mode==='overview'?'overview':mode,selectedId,view:clone(view)});if(history.length>30)history.shift();}
+  function fillReading(node){
+    const reading=$('reading');reading.querySelector('.trail').textContent=lineage(node.id).slice(0,-1).map(caption).join(' / ');
+    reading.querySelector('h2').textContent=node.title;const badge=reading.querySelector('.status');const provisional=node.status==='暂定'||node.status==='待定';badge.textContent=provisional?'暂定':'';badge.hidden=!provisional;badge.dataset.status=provisional?'暂定':'';$('scroll-hint').hidden=true;
+    const body=reading.querySelector('.body');body.replaceChildren();const p=document.createElement('p');markedText(p,node.description);body.appendChild(p);
+    const sources=reading.querySelector('.sources');sources.replaceChildren();for(const source of node.sources||[]){const link=document.createElement('a');markedText(link,source.label||source.path);link.href=(document.documentElement.dataset.projectRoot||'..')+'/'+source.path;link.target='_blank';link.rel='noopener';sources.appendChild(link)}
+    const related=$('related-reading');related.replaceChildren();
+    for(const relation of activeRelations(node.id)){
+      const target=byId.get(relation.from===node.id?relation.to:relation.from);if(!target||target.id===node.id)continue;
+      const button=document.createElement('button');button.textContent=caption(target);button.title=relation.label;button.addEventListener('click',()=>openNode(target.id));related.appendChild(button);
+    }
+    reading.querySelector('details').open=false;reading.scrollTop=0;body.scrollTop=0;sources.scrollTop=0;metricsKey='';
+  }
+  function measureReading(panelWidth){
+    const reading=$('reading');readingWidth=panelWidth;reading.style.width=panelWidth+'px';reading.style.height='auto';reading.style.maxHeight='none';
+    readingHeight=Math.ceil(reading.getBoundingClientRect().height)+2;const heading=reading.querySelector('h2');underlineOffset=heading.offsetTop+heading.offsetHeight-1;
+  }
+  function detailLayout(id,previous){
+    let base=previous;const parentId=byId.get(id).parentId;
+    if(!(previous.positions[parentId]?.opacity>.02)||!children(parentId).every(n=>previous.positions[n.id]?.opacity>.02))base=TRIPLayout.focus({width,height,nodes,selectedId:parentId,previous});
+    let candidate=TRIPLayout.detail({width,height,nodes,selectedId:id,previous:base,panelHeight:240,panelWidth:width*.29});
+    measureReading(candidate.panel.w);candidate=TRIPLayout.detail({width,height,nodes,selectedId:id,previous:base,panelHeight:readingHeight,panelWidth:readingWidth});
+    layoutRevision++;return augmentRelations(candidate,id);
+  }
+  function openNode(id,options={}){
+    if(busy()||!byId.has(id))return;
+    if(id===data.rootId){home();return;}if(id===selectedId)return;
+    if(mode==='overview')cancelDrag();
+    const node=byId.get(id),from=clone(view);if(options.remember!==false)remember();
+    previousSelection=selectedId;selectedId=id;readingOpacity=0;readingRect=null;expandProgress=0;
+    const isDirectory=children(id).length>0;
+    if(isDirectory){
+      focusView=augmentRelations(TRIPLayout.focus({width,height,nodes,selectedId:id,previous:from}),id);
+      birthIds=children(id).filter(n=>(from.positions[n.id]?.opacity||0)<.03).map(n=>n.id);
+      const transition=normalizeTransition(from,focusView);fromView=transition.from;toView=transition.to;
+      setState('focusing');
+    }else{
+      fillReading(node);const target=detailLayout(id,from);readingRect=target.panel;
+      const transition=normalizeTransition(from,target);fromView=transition.from;toView=transition.to;birthIds=[];
+      setState('detailEntering');
+    }
+    $('announcer').textContent=node.title;
+  }
+  function growing(amount){
+    const result=clone(focusView),parent=result.positions[selectedId];
+    birthIds.forEach((id,i)=>{const target=result.positions[id],local=clamp((amount-i*.014)/(1-i*.014)),dx=target.x-parent.x,dy=target.y-parent.y,d=Math.hypot(dx,dy)||1,travel=lerp(parent.r*.61,d,smooth(local));result.positions[id]={...target,x:parent.x+dx/d*travel,y:parent.y+dy/d*travel,r:Math.max(.15,target.r*(1-Math.pow(1-local,3))),opacity:smooth(local/.09),local}});
+    return result;
+  }
+  function startReturn(targetMode,id,target){
+    selectedId=id;readingOpacity=0;readingRect=null;birthIds=[];visibleRelations=[];relatedIds=new Set();expandProgress=0;
+    if(targetMode==='detail'){
+      fillReading(byId.get(id));target=detailLayout(id,target);readingRect=target.panel;
+    }else if(targetMode==='focus')target=augmentRelations(target,id);
+    const transition=normalizeTransition(view,target);fromView=transition.from;toView=transition.to;transitionEnd=targetMode;
+    setState('returning');
+  }
+  function back(){
+    if(busy()||!history.length)return;
+    const prior=history.pop();let target=prior.mode==='overview'?overview():prior.view;
+    if(prior.mode==='focus'&&(target.width!==width||target.height!==height))target=TRIPLayout.focus({width,height,nodes,selectedId:prior.selectedId,previous:view});
+    if(prior.mode==='detail'&&(target.width!==width||target.height!==height))target=view;
+    startReturn(prior.mode,prior.selectedId,target);
+  }
+  function home(){if(busy()||mode==='overview')return;history=[];startReturn('overview',null,overview())}
+  $('home').addEventListener('click',home);$('back').addEventListener('click',back);$('back-branch').addEventListener('click',back);
+  $('next-item').addEventListener('click',()=>{if(mode!=='detail')return;const siblings=children(byId.get(selectedId).parentId),i=siblings.findIndex(n=>n.id===selectedId);openNode(siblings[(i+1)%siblings.length].id)});
+  $('orbit-toggle').addEventListener('click',()=>{if(mode==='overview'){paused=!paused;updateUI()}});
+  $('background-toggle').addEventListener('click',()=>{cosmic=!cosmic;background.setEnabled(cosmic);$('background-toggle').textContent=cosmic?'纯黑背景':'宇宙背景';$('app').dataset.background=cosmic?'cosmic':'black'});
+  $('reading').querySelector('details').addEventListener('toggle',()=>{if(mode!=='detail')return;const target=detailLayout(selectedId,view),transition=normalizeTransition(view,target);readingRect=target.panel;fromView=transition.from;toView=transition.to;setState('detailEntering')});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')back()});
+  function resize(){
+    cancelDrag();pointer.hoveredId=null;width=innerWidth;height=innerHeight;physics.resize(width,height);ambient.reset();background.resize(width,height);
+    if(mode==='overview'||!selectedId){view=overview();setState('overview');return;}
+    if(mode==='returning'&&transitionEnd==='overview'){selectedId=null;readingRect=null;readingOpacity=0;view=overview();setState('overview');return;}
+    const old=clone(view);
+    if(!children(selectedId).length){const next=detailLayout(selectedId,old);view=next;readingRect=next.panel;readingOpacity=0;setState('detail')}
+    else {focusView=augmentRelations(TRIPLayout.focus({width,height,nodes,selectedId,previous:old}),selectedId);view=clone(focusView);birthIds=[];expandProgress=1;readingRect=null;readingOpacity=0;setState('focus')}
+  }
+  addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(resize)});
+  function wrap(text,r,kind){
+    const key=text+'|'+Math.round(r*2)+'|'+kind;if(labelCache.has(key))return labelCache.get(key);
+    let size=kind==='root'?clamp(r*.42,11,23):kind==='domain'?clamp(r*.25,13,22):clamp(r*.29,10,17),lines=[];
+    for(let trial=0;trial<9;trial++){
+      measure.font=`${size}px "Microsoft YaHei UI",sans-serif`;const maxWidth=r*1.5;
+      if(measure.measureText(text).width<=maxWidth){lines=[text];break;}
+      const chars=Array.from(text),count=Math.max(2,Math.ceil(measure.measureText(text).width/maxWidth)),base=Math.floor(chars.length/count),extra=chars.length%count;let start=0;
+      lines=Array.from({length:count},(_,i)=>{const length=base+(i<extra?1:0),line=chars.slice(start,start+length).join('');start+=length;return line});
+      if(lines.length<=3&&lines.every(line=>measure.measureText(line).width<=maxWidth+.2))break;size-=.7;
+    }
+    const value={size,lines};labelCache.set(key,value);return value;
+  }
+  function drawBubble(bubble,p,now,dt,surfaceOpacity){
+    const visible=p&&p.opacity>.018&&p.r>1;const {group,hit,fx,ring,label,node,hover}=bubble;
+    group.style.display=visible?'':'none';group.setAttribute('visibility',visible?'visible':'hidden');group.setAttribute('opacity',visible?p.opacity:0);
+    if(!visible){group.setAttribute('tabindex',-1);hover.target=0;hover.strength=0;return;}
+    group.setAttribute('transform',`translate(${p.x} ${p.y})`);hit.setAttribute('r',p.r);ring.setAttribute('r',p.r+7);
+    const enabled=!busy()&&p.opacity>.20;group.setAttribute('aria-disabled',!enabled);group.setAttribute('tabindex',enabled?0:-1);
+    hover.strength=lerp(hover.strength,enabled?hover.target:0,1-Math.exp(-dt*10));
+    TRIPBubbleFX.update(fx,{x:0,y:0,r:p.r,opacity:1,color:colorFor(node),hover:{x:hover.x,y:hover.y,strength:reduced?0:hover.strength},time:reduced?0:now,selected:node.id===selectedId,surfaceOpacity});
+    const title=caption(node),sizing=wrap(title,p.r,node.kind),key=title+'|'+sizing.size.toFixed(2);
+    if(key!==bubble.labelKey){label.replaceChildren();label.setAttribute('font-size',sizing.size);sizing.lines.forEach((line,i)=>{const span=el('tspan',{x:0,y:(i-(sizing.lines.length-1)/2)*sizing.size*1.32},label);span.textContent=line});bubble.labelKey=key;}
+    label.style.display=p.labelVisible===false?'none':'';label.setAttribute('opacity',p.local==null?1:smooth((p.local-.42)/.40));
+  }
+  function pathBetween(a,b){const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;return `M ${a.x+dx/d*(a.r+4)} ${a.y+dy/d*(a.r+4)} L ${b.x-dx/d*(b.r+4)} ${b.y-dy/d*(b.r+4)}`}
+  function drawLinks(){
+    const ancestors=new Set(selectedId?lineage(selectedId).map(n=>n.id):[]);
+    for(const edge of treeEdges){const a=view.positions[edge.from],b=view.positions[edge.to],visible=a?.opacity>.02&&b?.opacity>.02&&!a.context&&!b.context;edge.path.style.display=visible?'':'none';if(!visible)continue;edge.path.setAttribute('d',pathBetween(a,b));const main=ancestors.has(edge.to)||edge.from===selectedId;edge.path.setAttribute('stroke',colorFor(byId.get(edge.to)));edge.path.setAttribute('opacity',Math.min(a.opacity,b.opacity)*(mode==='overview'?.40:main?.65:.28));}
+    const positions=Object.values(view.positions).filter(p=>p.opacity>.05),panel=readingRect,labelBoxes=[];
+    for(const entry of relationElements){
+      const r=entry.relation,show=visibleRelations.some(v=>v.id===r.id)&&!['overview','focusing','splitting','returning'].includes(mode);
+      const a=view.positions[r.from],b=view.positions[r.to];entry.path.style.display=show?'':'none';entry.label.style.display='none';if(!show||!a||!b)continue;
+      entry.path.setAttribute('d',pathBetween(a,b));entry.path.setAttribute('opacity',Math.min(a.opacity,b.opacity));
+      const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;let found=null;
+      for(const fraction of [.5,.37,.63])for(const offset of [16,-16,32,-32,48,-48]){
+        const x=lerp(a.x,b.x,fraction)-dy/d*offset,y=lerp(a.y,b.y,fraction)+dx/d*offset,w=r.label.length*10.2+12,h=18;
+        const box={x:x-w/2,y:y-h/2,w,h};
+        if(box.x<22||box.x+w>width-22||box.y<106||box.y+h>height-63)continue;
+        if(positions.some(p=>rectHits(p,box,7))||panel&&box.x<panel.x+panel.w&&box.x+w>panel.x&&box.y<panel.y+panel.h&&box.y+h>panel.y)continue;
+        if(labelBoxes.some(other=>box.x<other.x+other.w+7&&box.x+box.w+7>other.x&&box.y<other.y+other.h+6&&box.y+box.h+6>other.y))continue;
+        found={x,y,box};break;
+      }
+      if(found){labelBoxes.push(found.box);entry.label.textContent=r.label;entry.label.setAttribute('x',found.x);entry.label.setAttribute('y',found.y);entry.label.style.display='';}
+    }
+  }
+  function tick(now,dt){
+    const t=(now-started)/1000;
+    if(mode==='overview'){if(!paused)phase+=dt;view=overview(dt);return;}
+    if(mode==='focusing'){
+      view=tween(fromView,toView,ease(t/(1.12*motionSpeed)));
+      for(const id of birthIds)view.positions[id]={...view.positions[id],r:.15,opacity:0};
+      if(t>=1.24*motionSpeed){expandProgress=0;if(birthIds.length){view=growing(0);setState('splitting')}else {view=clone(focusView);setState('focus')}}
+    }else if(mode==='splitting'){
+      expandProgress=clamp(t/(1.8*motionSpeed));view=growing(expandProgress);
+      if(expandProgress===1){view=clone(focusView);setState('focus')}
+    }else if(mode==='detailEntering'){
+      const progress=ease(t/(.85*motionSpeed));view=tween(fromView,toView,progress);
+      if(progress===1){view=clone(toView);setState('detail')}
+    }else if(mode==='returning'){
+      const progress=ease(t/(.9*motionSpeed));view=tween(fromView,toView,progress);
+      if(progress===1){view=clone(toView);if(transitionEnd==='overview'){selectedId=null;expandProgress=0;readingRect=null;visibleRelations=[];relatedIds.clear();}setState(transitionEnd);}
+    }
+  }
+  function drawReading(dt){
+    const reading=$('reading'),want=mode==='detail';
+    const collides=readingRect&&Object.values(view.positions).some(p=>p.opacity>.03&&rectHits(p,readingRect,10));
+    const target=want&&!collides?1:0;readingOpacity=target>readingOpacity?Math.min(target,readingOpacity+dt/(.20*motionSpeed)):Math.max(target,readingOpacity-dt/(.12*motionSpeed));
+    const visible=readingRect&&readingOpacity>.001;reading.classList.toggle('visible',Boolean(visible));reading.style.visibility=visible?'visible':'hidden';reading.style.opacity=readingOpacity;reading.style.pointerEvents=readingOpacity>.98?'auto':'none';reading.setAttribute('aria-hidden',readingOpacity>.98?'false':'true');
+    const hole=$('reading-hole'),linkHole=$('reading-line-hole');if(!readingRect||!visible){hole.setAttribute('width',0);hole.setAttribute('height',0);linkHole.setAttribute('width',0);linkHole.setAttribute('height',0);$('reading-link').setAttribute('opacity',0);readingAnchor=null;return;}
+    Object.assign(reading.style,{left:readingRect.x+'px',top:readingRect.y+'px',width:readingRect.w+'px',height:readingRect.h+'px'});
+    const key=layoutRevision+'|'+readingRect.w+'|'+readingRect.h;
+    if(metricsKey!==key){const body=reading.querySelector('.body');$('scroll-hint').hidden=body.scrollHeight<=body.clientHeight+2&&reading.scrollHeight<=reading.clientHeight+2;metricsKey=key;}
+    hole.setAttribute('x',readingRect.x-12);hole.setAttribute('y',readingRect.y-12);hole.setAttribute('width',readingRect.w+24);hole.setAttribute('height',readingRect.h+24);
+    const p=view.positions[selectedId],side=readingRect.side,heading=reading.querySelector('h2').getBoundingClientRect();
+    const useRight=side==='left'||side==='bottom'&&p.x>heading.x+heading.width/2;
+    const end={x:useRight?heading.right:heading.x,y:heading.bottom-1};
+    const turns=side==='bottom'?[{x:end.x+(useRight?10:-10),y:readingRect.y-14},{x:end.x+(useRight?10:-10),y:end.y}]:[];
+    const toward=turns[0]||end,angle=Math.atan2(toward.y-p.y,toward.x-p.x),edge=TRIPBubbleFX.edge(bubbles.get(selectedId).fx,angle);
+    const start={x:p.x+edge.x,y:p.y+edge.y};
+    linkHole.setAttribute('x',heading.x);linkHole.setAttribute('y',readingRect.y);linkHole.setAttribute('width',heading.width);linkHole.setAttribute('height',readingRect.h);
+    $('reading-link').setAttribute('d',`M ${start.x} ${start.y} `+[...turns,end].map(q=>`L ${q.x} ${q.y}`).join(' '));$('reading-link').setAttribute('opacity',readingOpacity*.62);
+    readingAnchor={start,end,angle};
+  }
+  function draw(now){
+    const dt=last?Math.min((now-last)/1000,.06):0;last=now;tick(now,dt);
+    if((mode==='focus'||mode==='detail')&&steadyView)view=ambient.step(steadyView,{pointer,time:now,dt,reducedMotion:reduced});
+    $('map').setAttribute('viewBox',`0 0 ${width} ${height}`);$('mask-background').setAttribute('width',width);$('mask-background').setAttribute('height',height);
+    $('reading-mask-background').setAttribute('width',width);$('reading-mask-background').setAttribute('height',height);
+    const fission=mode==='splitting'&&expandProgress>0&&expandProgress<1,surface=fission?smooth((expandProgress-.82)/.18):1;
+    if(fission){const parent=view.positions[selectedId],shapes=[parent,...birthIds.map(id=>view.positions[id])];const k=Math.min(parent.r,...birthIds.map(id=>focusView.positions[id].r))*.4*Math.sin(Math.PI*expandProgress);$('membrane').setAttribute('d',BubbleMembrane.path(shapes,{smoothness:k,step:2,maxCells:22000,precision:2}));$('membrane').style.setProperty('--tone',colorFor(byId.get(selectedId)));$('membrane').setAttribute('opacity',1-surface);$('membrane').setAttribute('visibility','visible');}else $('membrane').setAttribute('visibility','hidden');
+    nodes.forEach((node,i)=>{const p=view.positions[node.id];drawBubble(bubbles.get(node.id),p,now,dt,fission&&(node.id===selectedId||birthIds.includes(node.id))?surface:1);for(const hole of [holes[i],readingHoles[i]]){hole.setAttribute('cx',p?.x||0);hole.setAttribute('cy',p?.y||0);hole.setAttribute('r',p?.opacity>.02&&!(hole===readingHoles[i]&&node.id===selectedId)?p.r+4:0)}});
+    drawLinks();drawReading(dt);requestAnimationFrame(draw);
+  }
+  window.TRIPMindmap={openNode,back,home,snapshot:()=>({mode,selectedId,phase,paused,expandProgress,birthIds:[...birthIds],layoutRevision,historyDepth:history.length,view:clone(view),panel:readingRect?{...readingRect}:null,visibleRelations:visibleRelations.map(r=>({...r})),overviewPhysics:physics.snapshot(),ambientOffsets:ambient.snapshot().appliedOffsets,readingAnchor:readingAnchor?clone(readingAnchor):null}),setPhase(value){if(mode==='overview'&&Number.isFinite(value)){phase=value;view=overview()}}};
+  background.resize(width,height);setState('overview');requestAnimationFrame(draw);
+})();
+
+</script>
+</body>
+</html>
